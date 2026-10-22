@@ -38,16 +38,17 @@
 
   <main class="hero-bg page-padding">
     <div class="container auth-wrap">
-      <div class="auth-card glass">
+      <div id="login-cuenta" class="auth-card glass">
         <span class="section-eyebrow">Tu cuenta gratis</span>
-        <h1 class="section-title" style="font-size: 1.6rem">Iniciar sesión</h1>
-        <p style="color: var(--cs-text-body); margin-top: 0.5rem; font-size: 0.9rem">
-          La primera vez que uses un email se crea la cuenta automáticamente
-          (contraseña mínimo 6 caracteres).
-        </p>
+        <h1 class="section-title" style="font-size: 1.6rem" data-cuenta="titulo">Iniciar sesión</h1>
+
+        <div class="auth-tabs" role="tablist" aria-label="Entrar o crear cuenta">
+          <button type="button" role="tab" class="auth-tab" data-cuenta="tab-entrar" aria-selected="true">Entrar</button>
+          <button type="button" role="tab" class="auth-tab" data-cuenta="tab-crear" aria-selected="false">Crear cuenta</button>
+        </div>
 
         <div class="modal-oauth">
-          <button id="login-google" class="btn glass btn-glass" type="button">
+          <button id="login-google" class="btn glass btn-glass" type="button" data-cuenta="google">
             <span class="oauth-icon">
               <svg viewBox="0 0 48 48" aria-hidden="true">
                 <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.9 32.6 29.4 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.6 6.1 29.6 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/>
@@ -59,33 +60,37 @@
             Continuar con Google
           </button>
         </div>
-        <p id="login-oauth-aviso" class="field-error" style="margin-top: 0.4rem"></p>
+        <p id="login-oauth-aviso" class="field-error" style="margin-top: 0.4rem" data-cuenta="aviso-google"></p>
+        <p class="auth-nota" data-cuenta="nota-google">
+          Si es tu primera vez con Google, se crea tu cuenta y aceptas la
+          <a href="privacidad.html" target="_blank">política de privacidad</a> y los
+          <a href="terminos.html" target="_blank">términos</a>.
+        </p>
 
         <div class="modal-divider">
           <span class="line"></span>o<span class="line"></span>
         </div>
 
-        <form id="login-form" class="auth-form" novalidate>
+        <form id="login-form" class="auth-form" novalidate data-cuenta="form">
           <div>
             <label for="login-email">Email</label>
-            <input id="login-email" type="email" required placeholder="tu@email.com" />
+            <input id="login-email" type="email" required placeholder="tu@email.com" autocomplete="email" data-cuenta="email" />
           </div>
           <div>
             <label for="login-password">Contraseña</label>
-            <input id="login-password" type="password" required placeholder="••••••••" />
+            <input id="login-password" type="password" required placeholder="Mínimo 6 caracteres" data-cuenta="password" />
           </div>
-          <label class="check-privacidad">
-            <input id="login-privacidad" type="checkbox" />
+          <div data-cuenta="grupo-repetir" hidden>
+            <label for="login-repetir">Repite la contraseña</label>
+            <input id="login-repetir" type="password" placeholder="La misma otra vez" autocomplete="new-password" data-cuenta="repetir" />
+          </div>
+          <label class="check-privacidad" data-cuenta="grupo-privacidad" hidden>
+            <input id="login-privacidad" type="checkbox" data-cuenta="privacidad" />
             <span>He leído la <a href="privacidad.html" target="_blank">política de privacidad</a> y acepto los <a href="terminos.html" target="_blank">términos y condiciones</a></span>
           </label>
-          <p id="login-error" class="field-error"></p>
-          <button class="btn btn-accent" type="submit" style="margin-top: 0.3rem">Entrar</button>
+          <p id="login-error" class="field-error" data-cuenta="error"></p>
+          <button class="btn btn-accent" type="submit" style="margin-top: 0.3rem" data-cuenta="boton">Entrar</button>
         </form>
-
-        <p class="modal-switch">
-          ¿Aún no tienes cuenta? <a href="index.html">Busca un viaje</a> y
-          regístrate al ver el detalle.
-        </p>
 
       </div>
     </div>
@@ -130,6 +135,7 @@
   <script src="js/config.js"></script>
   <script src="js/auth.js"></script>
   <script src="js/authHeader.js"></script>
+  <script src="js/formCuenta.js"></script>
   <script src="js/login.js"></script>
 </body>
 </html>

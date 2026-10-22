@@ -908,6 +908,10 @@ label.check-privacidad {
   position: relative;
   width: 100%;
   max-width: 420px;
+  /* Si no cabe en pantallas bajas, scroll dentro en vez de cortarse. */
+  max-height: calc(100vh - 2rem);
+  max-height: calc(100dvh - 2rem);
+  overflow-y: auto;
   border-radius: 24px;
   padding: 1.75rem;
 }
@@ -1024,6 +1028,96 @@ label.check-privacidad {
   margin-top: 1rem;
   font-size: 0.68rem;
   color: rgba(43, 32, 25, 0.4);
+}
+
+.modal-form-grupo input {
+  width: 100%;
+}
+
+/* Modales con caja oscura (regwall, confirmaciones del panel): los
+   textos pensados para fondo claro se pasan a claros. */
+.modal-box.glass-dark h2 {
+  color: var(--cs-white);
+}
+
+.modal-box.glass-dark p:not(.field-error),
+.modal-box.glass-dark .check-privacidad {
+  color: var(--cs-white);
+  opacity: 0.85;
+  overflow-wrap: anywhere;
+}
+
+.modal-box.glass-dark p.legal-note {
+  opacity: 0.6;
+}
+
+.modal-box.glass-dark .modal-divider {
+  color: var(--cs-white);
+  opacity: 0.7;
+}
+
+.modal-box.glass-dark .modal-divider span.line {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.modal-box.glass-dark .modal-close {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.modal-box.glass-dark a {
+  color: var(--cs-terracotta-300);
+}
+
+/* Pestañas "Entrar / Crear cuenta" (login.html y modal de resultados) */
+.auth-tabs {
+  display: flex;
+  gap: 0.25rem;
+  margin-top: 1.25rem;
+  padding: 0.25rem;
+  border-radius: 50px;
+  background: rgba(128, 128, 128, 0.16);
+}
+
+.auth-tab {
+  flex: 1;
+  padding: 0.55rem 0.75rem;
+  border: 0;
+  border-radius: 50px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  opacity: 0.75;
+  cursor: pointer;
+  transition: background-color 0.15s ease, opacity 0.15s ease;
+}
+
+.auth-tab:hover {
+  opacity: 1;
+}
+
+.auth-tab[aria-selected="true"] {
+  background: var(--cs-terracotta-700);
+  color: var(--cs-white);
+  opacity: 1;
+}
+
+.auth-tab:focus-visible {
+  outline: 2px solid var(--cs-terracotta-500);
+  outline-offset: 2px;
+}
+
+.auth-nota {
+  margin-top: 0.6rem;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: var(--cs-ink-faint);
+}
+
+.auth-nota a {
+  color: var(--cs-terracotta-700);
+  text-decoration: underline;
 }
 
 /* ---------- Detalle del viaje ---------- */
@@ -1812,19 +1906,6 @@ body.cursor-click .cursor-ring {
 
 .admin-guardado.es-error {
   color: #b91c1c;
-}
-
-/* Modal de confirmación del panel: caja oscura, texto claro. */
-#confirmar-overlay .modal-box h2 {
-  color: var(--cs-white);
-}
-
-#confirmar-overlay .modal-box p {
-  color: var(--cs-white);
-  opacity: 0.85;
-  font-size: 0.95rem;
-  line-height: 1.5;
-  overflow-wrap: anywhere;
 }
 
 .admin-select {

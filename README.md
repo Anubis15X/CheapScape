@@ -151,9 +151,15 @@ servidor:
 
 Proyecto Supabase "cheapscape" (región West EU, Irlanda), plan gratis.
 
-- **Cuentas:** Supabase Auth con email + contraseña (`js/auth.js`). Si
-  el email no existe, se crea la cuenta. Hay que marcar la casilla de
-  privacidad. "Confirm email" está **desactivado** mientras se prueba
+- **Cuentas:** Supabase Auth con email + contraseña (`js/auth.js`).
+  Desde el 22-oct-2026, "Entrar" y "Crear cuenta" son dos pestañas en
+  `login.html` y en el modal de resultados (lógica común en
+  `js/formCuenta.js`). Antes era un solo botón que, si no podía entrar,
+  creaba la cuenta, y un email mal escrito creaba una cuenta nueva sin
+  avisar. Crear cuenta pide repetir la contraseña y la casilla de
+  privacidad; con Google, en "Entrar" se avisa de que la primera vez
+  se crea la cuenta. Supabase no revela si un email existe, así que un
+  fallo al entrar dice "Email o contraseña incorrectos". "Confirm email" está **desactivado** mientras se prueba
   (el correo gratis de Supabase solo manda unos pocos emails por hora);
   antes de lanzar hay que configurar un SMTP propio y reactivarlo.
 - **Login con Google** (22-oct-2026): proyecto de Google Cloud

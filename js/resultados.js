@@ -101,13 +101,22 @@ function pintarTarjeta(trip, origen) {
 
 const modalOverlay = document.getElementById("modal-overlay");
 const modalDestino = document.getElementById("modal-destino");
-const modalForm = document.getElementById("modal-form");
-const modalEmailInput = document.getElementById("modal-email");
-const modalPasswordInput = document.getElementById("modal-password");
-const modalEmailError = document.getElementById("modal-email-error");
-const modalOauthAviso = document.getElementById("modal-oauth-aviso");
-const modalBoton = modalForm.querySelector("button[type=submit]");
 let tripSeleccionado = null;
+
+// Pestañas "Crear cuenta" / "Ya tengo cuenta" (ver js/formCuenta.js).
+// Al entrar con email se va directo al detalle; con Google, login.html
+// recoge la sesión al volver y lleva al mismo sitio.
+const formModal = prepararFormCuenta(document.getElementById("modal-cuenta"), {
+  modo: "crear",
+  volverA: function () {
+    return tripSeleccionado ? urlDetalle(tripSeleccionado) : "";
+  },
+  alEntrar: function () {
+    const trip = tripSeleccionado;
+    cerrarModal();
+    if (trip) window.location.href = urlDetalle(trip);
+  },
+});
 
 function urlDetalle(trip) {
   return "viaje.html?id=" + encodeURIComponent(trip.id) + "&tipo=" + encodeURIComponent(trip.tipoTarjeta);
@@ -121,10 +130,7 @@ function handleVerDetalles(trip) {
   tripSeleccionado = trip;
   modalDestino.textContent = trip.destino;
   modalOverlay.classList.add("open");
-  if (modalEmailError) {
-    modalEmailError.textContent = "";
-    modalEmailError.classList.remove("visible");
-  }
+  formModal.limpiar();
 }
 
 function cerrarModal() {
@@ -132,85 +138,7 @@ function cerrarModal() {
   tripSeleccionado = null;
 }
 
-async function completarRegistro(email, password) {
-  modalBoton.disabled = true;
-  modalBoton.textContent = "Entrando...";
-
-  const resultado = await iniciarOcrearSesion(email, password);
-
-  modalBoton.disabled = false;
-  modalBoton.textContent = "Crear cuenta / entrar";
-
-  if (!resultado.ok) {
-    modalEmailError.textContent = resultado.error;
-    modalEmailError.classList.add("visible");
-    return;
-  }
-
-  const trip = tripSeleccionado;
-  cerrarModal();
-  if (trip) {
-    window.location.href = urlDetalle(trip);
-  }
-}
-
 document.getElementById("modal-close").addEventListener("click", cerrarModal);
-
-// Con Google se sale de la página: al volver, login.html recoge la
-// sesión y lleva directo al detalle del viaje elegido.
-const modalGoogle = document.getElementById("modal-google");
-modalGoogle.addEventListener("click", async function () {
-  if (!document.getElementById("modal-privacidad").checked) {
-    modalOauthAviso.textContent = "Tienes que marcar la casilla de privacidad y términos.";
-    modalOauthAviso.classList.add("visible");
-    return;
-  }
-
-  modalOauthAviso.classList.remove("visible");
-  modalGoogle.disabled = true;
-
-  const resultado = await iniciarConGoogle(tripSeleccionado ? urlDetalle(tripSeleccionado) : "");
-
-  if (!resultado.ok) {
-    modalGoogle.disabled = false;
-    modalOauthAviso.textContent = resultado.error;
-    modalOauthAviso.classList.add("visible");
-  }
-});
-
-modalForm.addEventListener("submit", function (event) {
-  event.preventDefault();
-  const email = (modalEmailInput.value || "").trim();
-  const password = modalPasswordInput.value;
-  const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-
-  if (!emailValido) {
-    modalEmailError.textContent = "Escribe un email válido para crear tu cuenta.";
-    modalEmailError.classList.add("visible");
-    modalEmailInput.focus();
-    return;
-  }
-  if (password.length < 6) {
-    modalEmailError.textContent = "La contraseña debe tener al menos 6 caracteres.";
-    modalEmailError.classList.add("visible");
-    modalPasswordInput.focus();
-    return;
-  }
-  if (!document.getElementById("modal-privacidad").checked) {
-    modalEmailError.textContent = "Tienes que marcar la casilla de privacidad y términos.";
-    modalEmailError.classList.add("visible");
-    return;
-  }
-
-  modalEmailError.classList.remove("visible");
-  completarRegistro(email, password);
-});
-
-[modalEmailInput, modalPasswordInput].forEach(function (campo) {
-  campo.addEventListener("input", function () {
-    modalEmailError.classList.remove("visible");
-  });
-});
 
 // Cerrar el modal si se hace clic fuera de la tarjeta
 modalOverlay.addEventListener("click", function (event) {

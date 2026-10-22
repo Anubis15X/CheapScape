@@ -4,7 +4,8 @@
    Sustituye a la versión que hablaba con el backend antiguo
    (/api/auth/...). Mantiene los mismos nombres de función para no
    tocar el resto del sitio: estaAutenticado(), esAdmin(),
-   emailActual(), cerrarSesion(), iniciarOcrearSesion().
+   emailActual(), cerrarSesion(). Entrar y crear cuenta son funciones
+   separadas: iniciarSesion() y crearCuenta().
 
    Las funciones síncronas (estaAutenticado, emailActual...) solo leen
    la sesión que Supabase guarda en localStorage, para pintar el header
@@ -13,7 +14,7 @@
    en el servidor de Supabase.
 
    Necesita js/config.js antes. Las funciones que hablan con Supabase
-   (iniciarOcrearSesion, clienteSupabase) necesitan además la librería
+   (iniciarSesion, crearCuenta, clienteSupabase...) necesitan además la librería
    supabase-js cargada en la página; las síncronas funcionan sin ella. */
 
 // Donde supabase-js guarda la sesión: "sb-<id del proyecto>-auth-token".
@@ -64,43 +65,48 @@ function cerrarSesion() {
   }
 }
 
+const MENSAJE_YA_EXISTE = "Ya hay una cuenta con ese email. Entra desde la pestaña «Entrar».";
+
 /**
- * Intenta iniciar sesión y, si la cuenta no existe, la crea. Devuelve
- * { ok: true, rol } o { ok: false, error }.
+ * Entra con una cuenta que ya existe. Devuelve { ok: true } o
+ * { ok: false, error }. Supabase no dice si el email existe o si la
+ * contraseña está mal (para que nadie pueda averiguar qué emails están
+ * registrados), así que el mensaje cubre los dos casos.
  */
-async function iniciarOcrearSesion(email, password) {
-  const auth = clienteSupabase().auth;
-
+async function iniciarSesion(email, password) {
   try {
-    const login = await auth.signInWithPassword({ email, password });
-    if (!login.error) {
-      return { ok: true, rol: "usuario" };
+    const { error } = await clienteSupabase().auth.signInWithPassword({ email, password });
+    if (!error) return { ok: true };
+    if (error.code === "invalid_credentials") {
+      return { ok: false, error: "Email o contraseña incorrectos. Si aún no tienes cuenta, créala en la pestaña «Crear cuenta»." };
+    }
+    return { ok: false, error: traducirError(error) };
+  } catch (e) {
+    return { ok: false, error: "No se pudo contactar con el servidor." };
+  }
+}
+
+/**
+ * Crea una cuenta nueva y deja la sesión iniciada. Devuelve { ok: true }
+ * o { ok: false, error }.
+ */
+async function crearCuenta(email, password) {
+  try {
+    const { data, error } = await clienteSupabase().auth.signUp({ email, password });
+    if (error) {
+      return { ok: false, error: error.code === "user_already_exists" ? MENSAJE_YA_EXISTE : traducirError(error) };
     }
 
-    if (login.error.code && login.error.code !== "invalid_credentials") {
-      return { ok: false, error: traducirError(login.error) };
+    // Si el email ya estaba registrado, según cómo esté configurado
+    // Supabase no da error pero devuelve un usuario sin "identities".
+    if (data.user && data.user.identities && data.user.identities.length === 0) {
+      return { ok: false, error: MENSAJE_YA_EXISTE };
     }
 
-    // No ha podido entrar: o la cuenta no existe, o la contraseña está
-    // mal. Probamos a registrarla.
-    const registro = await auth.signUp({ email, password });
-    if (registro.error) {
-      return { ok: false, error: traducirError(registro.error) };
-    }
-
-    // Si el email ya estaba registrado, Supabase no da error (para no
-    // revelar qué emails existen) pero devuelve un usuario sin
-    // "identities": eso significa que la contraseña era incorrecta.
-    const usuario = registro.data.user;
-    if (usuario && usuario.identities && usuario.identities.length === 0) {
-      return { ok: false, error: "La contraseña no es correcta para ese email." };
-    }
-
-    if (!registro.data.session) {
+    if (!data.session) {
       return { ok: false, error: "Te hemos enviado un email para confirmar la cuenta. Ábrelo y vuelve a entrar." };
     }
-
-    return { ok: true, rol: "usuario" };
+    return { ok: true };
   } catch (e) {
     return { ok: false, error: "No se pudo contactar con el servidor." };
   }
