@@ -241,7 +241,7 @@ function formatearFecha(iso) {
 }
 
 function formatearRangoFechas(salida, llegada) {
-  if (!salida && !llegada) return "Próximo finde";
+  if (!salida && !llegada) return "Fechas por elegir";
   if (salida && llegada) return formatearFecha(salida) + " – " + formatearFecha(llegada);
   return formatearFecha(salida || llegada);
 }
@@ -288,13 +288,13 @@ document.querySelectorAll('.nav-link[href="index.html"]').forEach(function (link
   if (!trips || trips.length === 0) {
     // Si no hay ninguna combinación por debajo del presupuesto, se avisa
     // en vez de inventar un viaje imposible, y se dice cuánto cuesta
-    // la escapada más barata desde ese origen.
+    // el viaje más barato desde ese origen.
     conBusquedaEl.hidden = true;
     sinResultadosEl.hidden = false;
     document.getElementById("sin-resultados-presupuesto").textContent = presupuesto + "€";
     if (resultado.minimo) {
       document.getElementById("sin-resultados-minimo").textContent =
-        ": la escapada más barata desde " + origen + " sale por " + resultado.minimo + "€" +
+        ": el viaje más barato desde " + origen + " sale por " + resultado.minimo + "€" +
         (compartido ? "" : " (o menos si te vale dormir en habitación compartida)");
     }
   } else {

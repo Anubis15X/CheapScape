@@ -2,7 +2,7 @@
    en index.html y el Top 10 en top-chollos.html), que antes no
    llevaban a ningún sitio. Al pulsar una, se entra al flujo de
    búsqueda real (resultados.html) con un origen de ejemplo (Madrid),
-   el próximo fin de semana y un presupuesto ya relacionado con el
+   el próximo sábado y un presupuesto ya relacionado con el
    precio que mostraba la tarjeta — así el usuario puede ver y ajustar
    el presupuesto, en vez de quedarse mirando una tarjeta estática.
    No toca las tarjetas de #cards-row (resultados.html), que ya tienen

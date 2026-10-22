@@ -17,9 +17,9 @@
  */
 async function buscarTop3(origen, fechaSalida, fechaLlegada, presupuesto, compartido) {
   if (!AEROPUERTO_ORIGEN[origen]) {
-    return { ok: false, error: "De momento solo buscamos escapadas desde Madrid o Barcelona." };
+    return { ok: false, error: "De momento solo buscamos viajes desde Madrid o Barcelona." };
   }
-  const resultado = calcularTop3(origen, presupuesto, compartido);
+  const resultado = calcularTop3(origen, presupuesto, compartido, nochesEntre(fechaSalida, fechaLlegada));
   return { ok: true, trips: resultado.trips, minimo: resultado.minimo };
 }
 

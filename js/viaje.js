@@ -28,7 +28,7 @@ function formatearFecha(iso) {
 }
 
 function pintarDetalle(detalle) {
-  document.getElementById("detalle-titulo").textContent = "Tu escapada a " + detalle.destino;
+  document.getElementById("detalle-titulo").textContent = "Tu viaje a " + detalle.destino;
 
   const origenTxt = detalle.origen ? "Desde " + detalle.origen : "";
   const fechasTxt =

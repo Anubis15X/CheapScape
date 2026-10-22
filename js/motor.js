@@ -12,8 +12,9 @@
 
    Algoritmo del Top 3 (explicado en el README):
    1. Para cada destino se calcula el precio total desde el origen:
-      vuelo + traslado aeropuerto-ciudad + alojamiento de 2 noches
-      (compartido si el usuario lo acepta, si no privado).
+      vuelo + traslado aeropuerto-ciudad + alojamiento por las noches
+      que hay entre las fechas elegidas (compartido si el usuario lo
+      acepta, si no privado).
    2. Se quedan solo los que caben en el presupuesto ("viables").
    3. El más barato = el de menor total.
    4. El mejor valorado = el de mejor nota de alojamiento (a igualdad,
@@ -22,20 +23,30 @@
       sin repetir destino.
    6. ahorroPct = cuánto más barato es que la media de los viables. */
 
-const NOCHES = 2;
-
 const AEROPUERTO_ORIGEN = { Madrid: "MAD", Barcelona: "BCN" };
 
-// Las fechas para las que se buscaron los precios de destinos.js.
+// Las fechas para las que se buscaron los precios de destinos.js. Los
+// precios de alojamiento de la tabla son de estas 2 noches.
 const FECHAS_REFERENCIA = { salida: "2026-11-13", llegada: "2026-11-15" };
+const NOCHES_REFERENCIA = 2;
 
 function redondear(n) {
   return Math.round(n * 100) / 100;
 }
 
+// Noches entre dos fechas "AAAA-MM-DD". Sin fechas válidas, las de
+// referencia.
+function nochesEntre(salida, llegada) {
+  const ms = new Date(llegada + "T00:00:00Z") - new Date(salida + "T00:00:00Z");
+  const noches = Math.round(ms / 86400000);
+  return noches >= 1 ? noches : NOCHES_REFERENCIA;
+}
+
 // Junta en un solo objeto todo lo necesario para un destino desde un
 // origen. Devuelve null si falta algún dato (destino no disponible).
-function calcularOpcion(d, origen, compartido) {
+// El alojamiento se escala del precio por noche de referencia a las
+// noches del viaje.
+function calcularOpcion(d, origen, compartido, noches) {
   const vuelo = d.vuelos[origen];
   if (!vuelo || vuelo.precio == null) return null;
 
@@ -47,13 +58,19 @@ function calcularOpcion(d, origen, compartido) {
   const alojamiento = d.alojamiento[tipoAlojamiento];
   if (!alojamiento || alojamiento.precio2Noches == null) return null;
 
+  const precioNoche = alojamiento.precio2Noches / NOCHES_REFERENCIA;
+  const precioAlojamiento = Math.round(precioNoche * noches);
+
   return {
     d: d,
     vuelo: vuelo,
     traslado: traslado,
     alojamiento: alojamiento,
     tipoAlojamiento: tipoAlojamiento,
-    total: Math.round(vuelo.precio + traslado.precioIdaVuelta + alojamiento.precio2Noches),
+    noches: noches,
+    precioNoche: precioNoche,
+    precioAlojamiento: precioAlojamiento,
+    total: Math.round(vuelo.precio + traslado.precioIdaVuelta + precioAlojamiento),
   };
 }
 
@@ -66,9 +83,9 @@ function aTarjeta(op, tipoTarjeta, media) {
     precioTotal: op.total,
     precioTransporte: op.vuelo.precio,
     precioTraslado: op.traslado.precioIdaVuelta,
-    precioHotel: op.alojamiento.precio2Noches,
-    precioHotelNoche: redondear(op.alojamiento.precio2Noches / NOCHES),
-    noches: NOCHES,
+    precioHotel: op.precioAlojamiento,
+    precioHotelNoche: redondear(op.precioNoche),
+    noches: op.noches,
     nota: op.alojamiento.nota,
     tipoAlojamiento: op.tipoAlojamiento,
     vueloDirecto: op.vuelo.directo,
@@ -81,9 +98,9 @@ function aTarjeta(op, tipoTarjeta, media) {
  * o estar vacío) y minimo es el viaje más barato posible desde ese
  * origen, para decirle al usuario cuánto tendría que subir.
  */
-function calcularTop3(origen, presupuesto, compartido) {
+function calcularTop3(origen, presupuesto, compartido, noches) {
   const opciones = DESTINOS.map(function (d) {
-    return calcularOpcion(d, origen, compartido);
+    return calcularOpcion(d, origen, compartido, noches);
   }).filter(Boolean);
 
   const minimo = opciones.length
@@ -167,7 +184,10 @@ async function calcularDetalle(id, origen, compartido, fechaSalida, fechaLlegada
   const d = DESTINOS.find(function (x) { return x.id === id; });
   if (!d) return null;
 
-  const op = calcularOpcion(d, origen, compartido);
+  const salida = fechaSalida || FECHAS_REFERENCIA.salida;
+  const llegada = fechaLlegada || FECHAS_REFERENCIA.llegada;
+
+  const op = calcularOpcion(d, origen, compartido, nochesEntre(salida, llegada));
   if (!op) return null;
 
   const privado = await pedirDatosProtegidos(id);
@@ -183,8 +203,6 @@ async function calcularDetalle(id, origen, compartido, fechaSalida, fechaLlegada
 
   const ida = op.vuelo.ida.split(" → ");
   const vuelta = op.vuelo.vuelta.split(" → ");
-  const salida = fechaSalida || FECHAS_REFERENCIA.salida;
-  const llegada = fechaLlegada || FECHAS_REFERENCIA.llegada;
 
   const detalle = aTarjeta(op, d.exotico ? "exotico" : "valorado", op.total);
   return Object.assign(detalle, {
@@ -207,7 +225,7 @@ async function calcularDetalle(id, origen, compartido, fechaSalida, fechaLlegada
       tipo: op.alojamiento.tipo,
       direccion: op.alojamiento.barrio,
       personas: op.alojamiento.personas || null,
-      nochesIncluidas: NOCHES,
+      nochesIncluidas: op.noches,
     },
     enlaceAfiliadoTransporte: enlaceVuelos(origen, op.vuelo.aeropuerto, salida, llegada),
     enlaceAfiliadoHotel: enlaceAlojamiento(op.alojamiento.nombre, d.destino, salida, llegada),
@@ -222,8 +240,9 @@ function fechaRevisionLegible() {
 
 function textoAvisoPrecios() {
   return (
-    "Estimación orientativa con precios de referencia del finde del 13 al 15 de noviembre, " +
-    "revisados el " + fechaRevisionLegible() + ". No es una oferta: el precio final lo pone cada proveedor. " +
+    "Estimación orientativa: vuelos con precios de referencia del 13 al 15 de noviembre y " +
+    "alojamiento según su precio por noche, revisados el " + fechaRevisionLegible() +
+    ". No es una oferta: el precio final lo pone cada proveedor. " +
     "Los enlaces de reserva pueden ser comerciales."
   );
 }

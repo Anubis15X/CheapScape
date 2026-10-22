@@ -8,13 +8,18 @@
 
 ## 1. Qué es CheapScape
 
-Web que responde a una pregunta: **"¿a qué ciudad puedo viajar este
-finde con el dinero que tengo?"**
+Web de **viajes** que responde a una pregunta: **"¿a qué ciudad puedo
+viajar con el dinero que tengo?"**
+
+**No es solo para fines de semana** (aclarado por Jose el 22-oct-2026):
+el usuario elige las fechas y puede viajar un finde, una semana o lo
+que quiera. El precio se calcula con las noches que haya entre sus
+fechas.
 
 El usuario (joven viajero con presupuesto ajustado; la idea nació de la
 experiencia Erasmus de Jose) indica **origen, fechas y presupuesto
-máximo**, y la web le propone un **Top 3** de escapadas de fin de
-semana (transporte + hotel, 2 noches) con el **precio total estimado**:
+máximo**, y la web le propone un **Top 3** de viajes (transporte +
+alojamiento) con el **precio total estimado**:
 
 1. **El más barato**
 2. **El mejor valorado** (más estrellas dentro del presupuesto)
@@ -26,7 +31,8 @@ usuarios). Se monetiza **solo por afiliación** (enlaces de reserva a
 proveedores), y eso queda para el final.
 
 **Público:** 18-28 años, estudiantes o primer empleo, salen de Madrid
-o Barcelona, escapadas viernes-domingo, 100-250 € por persona.
+o Barcelona, viajes de unos días a una semana, presupuesto ajustado
+por persona.
 
 **Flujo principal:**
 buscador (origen, fechas, presupuesto) → Top 3 → "Ver detalles" →
@@ -175,10 +181,12 @@ Proyecto Supabase "cheapscape" (región West EU, Irlanda), plan gratis.
   en su gestor de contraseñas, nunca aquí.
 
 **Precio total** = vuelo i/v + traslado aeropuerto-ciudad i/v +
-alojamiento 2 noches (compartido si el usuario marca la casilla y el
-destino lo tiene; si no, privado). Precios de referencia del finde
-13-15 nov 2026 aunque el usuario elija otras fechas; el rótulo de
-"estimación orientativa" lo dice.
+alojamiento × noches del viaje (precio por noche = `precio2Noches / 2`;
+compartido si el usuario marca la casilla y el destino lo tiene; si no,
+privado). Las noches salen de las fechas que elige el usuario. Los
+precios de vuelo son de referencia (13-15 nov 2026) aunque elija otras
+fechas; el rótulo de "estimación orientativa" lo dice. Conseguir
+precios para cualquier fecha a meses vista está pendiente (decisión 5).
 
 **Algoritmo del Top 3** (debe poder explicarlo Jose): se calcula el
 precio total de los 15 destinos desde el origen y se quedan los que
@@ -198,8 +206,8 @@ curados a mano antes de pelearse con APIs reales.**
 
 ### Alcance del MVP (todo lo demás es Fase 2)
 - 2 orígenes: **Madrid y Barcelona**.
-- ~15 destinos europeos, fin de semana (2 noches), presupuesto por
-  persona, en euros.
+- ~15 destinos europeos, viajes de las noches que elija el usuario,
+  presupuesto por persona, en euros.
 - 4 pantallas núcleo: landing con buscador, Top 3, regwall (registro),
   detalle desbloqueado. Las páginas legales y de contenido ya existen.
 - Datos: **tabla propia de destinos y precios orientativos cargados a
@@ -235,13 +243,13 @@ curados a mano antes de pelearse con APIs reales.**
 | 7 | Despliegue | URL pública + analítica; claves fuera de Git | Abrirla desde otro móvil |
 | 8 | Lanzamiento | Enlace + encuesta de 3 preguntas a 15-25 personas (Erasmus, universidad, grupos de viajes) | ≥10 respuestas |
 
-Encuesta: ¿te interesó alguna de las 3 escapadas? ¿te fiaste del
+Encuesta: ¿te interesó alguno de los 3 viajes? ¿te fiaste del
 precio? ¿te registrarías y harías clic para reservar?
 
 ### Fase 2 (solo con tracción real, ej. >100 búsquedas/semana)
-APIs en vivo de vuelos/buses/hoteles (la investigación de 2026 apunta a
-Amadeus Self-Service para datos y Booking Affiliate / Travelpayouts
-para comisión; Skyscanner y Kiwi Tequila están descartadas), cualquier
+APIs en vivo de vuelos/buses/hoteles (ver decisión 5: Amadeus
+Self-Service cerró el 17-jul-2026; Booking, Skyscanner, Airbnb y
+Trainline exigen contrato o mucho tráfico), cualquier
 ciudad de origen con autocompletado, fechas libres, rate limiting,
 Google OAuth si el registro por email frena, dashboard y favoritos,
 alertas y emails, panel admin con KPIs, referidos/WhatsApp/push,
@@ -287,6 +295,14 @@ Cada guía enlaza al buscador. Criterios acordados:
    13-15 nov 2026: vuelo + traslado aeropuerto-ciudad + alojamiento
    privado o compartido.
 4. Analítica: Plausible vs Umami.
+5. **Fuente de precios para cualquier fecha** (pendiente, 22-oct-2026).
+   Con una foto de precios a mano no se cubren fechas a meses vista ni
+   la subida de precios al acercarse la fecha (720 precios/semana para
+   3 meses). Opciones vistas: Travelpayouts (calendario de precios de
+   vuelos, registro gratis de afiliado), LiteAPI (hoteles, registro
+   gratis), Hostelworld y Omio (afiliados, hay que solicitarlo). Se
+   descartó limitar la web a "los próximos findes": CheapScape es para
+   viajes de cualquier duración.
 
 ---
 

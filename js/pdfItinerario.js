@@ -123,7 +123,7 @@
 
     fuente("helvetica", "bold", 8);
     color(TERRACOTA);
-    texto("ITINERARIO DE ESCAPADA", ancho - MARGEN, 16, { align: "right", charSpace: 0.6 });
+    texto("ITINERARIO DE VIAJE", ancho - MARGEN, 16, { align: "right", charSpace: 0.6 });
     fuente("helvetica", "normal", 8.5);
     color(TINTA_SUAVE);
     texto("Ref. " + referencia, ancho - MARGEN, 22, { align: "right" });
@@ -354,7 +354,7 @@
     texto("CheapScape", MARGEN, alto - 6.5);
     fuente("helvetica", "normal", 8);
     color(TERRACOTA_CLARO);
-    texto("Escapa este finde sin arruinarte", MARGEN + 25, alto - 6.5);
+    texto("Escápate sin arruinarte", MARGEN + 25, alto - 6.5);
     color(CREMA);
     texto("hola@cheapscape.com", ancho - MARGEN, alto - 6.5, { align: "right" });
 

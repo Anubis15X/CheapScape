@@ -26,8 +26,9 @@
    - traslados: uno por aeropuerto, del aeropuerto al centro y vuelta.
        precioIdaVuelta en €
 
-   Precio total de un viaje =
-     vuelo + traslado de su aeropuerto + alojamiento (2 noches).
+   Precio total de un viaje (ver js/motor.js) =
+     vuelo + traslado de su aeropuerto
+     + alojamiento (precio2Noches / 2 × noches del viaje).
 
    null = no hay dato; ese destino no puede entrar en el Top 3 desde
    ese origen. */

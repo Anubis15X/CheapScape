@@ -50,8 +50,8 @@ form.addEventListener("submit", function (event) {
     mostrarError("Elige una fecha de vuelta.");
     return;
   }
-  if (fechaLlegada < fechaSalida) {
-    mostrarError("La vuelta no puede ser antes que la salida.");
+  if (fechaLlegada <= fechaSalida) {
+    mostrarError("La vuelta tiene que ser al menos un día después de la salida.");
     return;
   }
   if (!presupuesto || presupuesto <= 0) {
@@ -92,7 +92,7 @@ form.querySelectorAll("input, select").forEach(function (campo) {
   campo.addEventListener("change", ocultarError);
 });
 
-// Botón "Buscar mi escapada" del CTA final: sube del todo para que se
+// Botón "Buscar mi viaje" del CTA final: sube del todo para que se
 // vea el buscador completo (no solo su borde superior) y deja el
 // cursor listo en el campo de origen.
 const ctaBuscar = document.getElementById("cta-buscar");
