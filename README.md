@@ -136,9 +136,12 @@ Logo y favicon definitivos ya integrados en las 13 páginas. Responsive
 El buscador, el Top 3 y el detalle ya funcionan **en el navegador**, sin
 servidor:
 
-- `js/destinos.js`: la tabla de 15 destinos con precios cargados a mano
-  (vuelo, traslado aeropuerto-ciudad, alojamiento privado y compartido).
-- `js/motor.js`: calcula el Top 3 y el detalle con esa tabla.
+- Precios de los 15 destinos (vuelo, traslado aeropuerto-ciudad,
+  alojamiento privado y compartido): están en la tabla `destinos` de
+  Supabase y se editan desde el panel admin. `js/destinos.js` tiene la
+  misma tabla como respaldo: si Supabase no responde, se usa esa.
+- `js/motor.js`: calcula el Top 3 y el detalle con esa tabla
+  (`cargarDestinos()` la pide a Supabase una vez por página).
 - `js/viajes.js`: mantiene las funciones `buscarTop3()` y
   `obtenerDetalleViaje()` que usan las páginas; ahora llaman al motor
   en vez de hacer `fetch`. El día que haya backend, solo cambia este
@@ -168,13 +171,25 @@ Proyecto Supabase "cheapscape" (región West EU, Irlanda), plan gratis.
   `js/destinos.js` solo tiene la parte pública (precios y notas).
 - **Datos:** `supabase/detalles_destino.sql` crea la tabla y la
   rellena; se puede volver a ejecutar en el SQL Editor para actualizar.
-  Si cambias un destino, cámbialo en los dos sitios.
+  Los precios se cambian desde el panel admin; si añades o quitas un
+  destino, hazlo en la tabla `destinos`, en `detalles_destino` y en
+  `js/destinos.js` (respaldo).
 - **Claves:** `js/config.js` lleva la URL y la clave *publishable*,
   que son públicas por diseño. La clave secreta (`sb_secret_…`) no va
   en ningún archivo.
 - **Al desplegar:** no publicar la carpeta `supabase/`, porque tiene
   los datos protegidos en claro.
-- **Panel admin:** desactivado (nadie es admin) hasta la Fase 2.
+- **Panel admin (22-oct-2026):** `admin.html`, enlazado desde "Mi
+  cuenta" solo para administradores. Muestra estadísticas, la lista de
+  usuarios (solo lectura) y un editor de precios y notas de cada
+  destino. `supabase/admin.sql` lo monta todo: marca la cuenta de Jose
+  como admin (`role: admin` en el `app_metadata`, que el usuario no
+  puede cambiar desde la web), crea la tabla `destinos` (la lee
+  cualquiera, solo un admin la edita), deja a un admin editar
+  `detalles_destino` y crea `admin_usuarios()`, que da error si no eres
+  admin. Para hacer admin a otra persona: el mismo `update` del SQL con
+  su email, y que vuelva a entrar. Comprobado: un visitante anónimo
+  recibe "permission denied" al editar y al pedir la lista de usuarios.
 - **Cuenta de Google del proyecto:** `cheapscape.notificaciones@gmail.com`
   (creada el 21-oct-2026) fue **suspendida por Google** el 22-oct-2026.
   Pendiente de recurso o de sustituirla. Las contraseñas las guarda Jose
@@ -252,7 +267,7 @@ Self-Service cerró el 17-jul-2026; Booking, Skyscanner, Airbnb y
 Trainline exigen contrato o mucho tráfico), cualquier
 ciudad de origen con autocompletado, fechas libres, rate limiting,
 Google OAuth si el registro por email frena, dashboard y favoritos,
-alertas y emails, panel admin con KPIs, referidos/WhatsApp/push,
+alertas y emails, KPIs de búsquedas y clics en el panel admin, referidos/WhatsApp/push,
 afiliación con atribución, dominio y marca definitivos.
 
 **Blog para SEO (idea del 22-oct-2026).** Guías por país y ciudad de los

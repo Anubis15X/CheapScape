@@ -8,9 +8,10 @@
     if (!boton) return;
 
     if (typeof estaAutenticado === "function" && estaAutenticado()) {
-      boton.textContent = esAdmin() ? "Panel admin" : "Mi cuenta";
+      // Los admin también van a "Mi cuenta"; desde ahí entran al panel.
+      boton.textContent = "Mi cuenta";
       boton.onclick = function () {
-        window.location.href = esAdmin() ? "admin.html" : "usuario.html";
+        window.location.href = "usuario.html";
       };
     } else {
       boton.textContent = "Iniciar sesión";

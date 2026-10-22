@@ -30,6 +30,30 @@ const AEROPUERTO_ORIGEN = { Madrid: "MAD", Barcelona: "BCN" };
 const FECHAS_REFERENCIA = { salida: "2026-11-13", llegada: "2026-11-15" };
 const NOCHES_REFERENCIA = 2;
 
+// Los precios vivos están en la tabla "destinos" de Supabase, que el
+// admin edita desde admin.html. Se piden una vez por página y
+// sustituyen a los de js/destinos.js; si Supabase no responde, se
+// quedan los del archivo (por eso sigue existiendo).
+let destinosCargados = false;
+
+async function cargarDestinos() {
+  if (destinosCargados || !window.supabase) return;
+  destinosCargados = true;
+  try {
+    const respuesta = await clienteSupabase()
+      .from("destinos")
+      .select("id, datos")
+      .order("orden");
+    if (respuesta.error || !respuesta.data || respuesta.data.length === 0) return;
+    DESTINOS.length = 0;
+    respuesta.data.forEach(function (fila) {
+      DESTINOS.push(Object.assign({ id: fila.id }, fila.datos));
+    });
+  } catch (e) {
+    // Sin conexión: seguimos con js/destinos.js.
+  }
+}
+
 function redondear(n) {
   return Math.round(n * 100) / 100;
 }

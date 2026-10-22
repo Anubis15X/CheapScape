@@ -27,6 +27,8 @@ if (!estaAutenticado()) {
     ? new Date(usuario.created_at).toLocaleDateString("es-ES", { day: "numeric", month: "long", year: "numeric" })
     : "—";
 
+  document.getElementById("cuenta-admin").hidden = !esAdmin();
+
   document.getElementById("btn-cerrar-sesion").addEventListener("click", function () {
     cerrarSesion();
     window.location.href = "index.html";

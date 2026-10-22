@@ -1,6 +1,11 @@
 /* =========================================================
    CheapScape — tabla de destinos y precios (parte PÚBLICA)
    =========================================================
+   RESPALDO: los precios que usa la web están en la tabla "destinos" de
+   Supabase y se editan desde admin.html. Este archivo solo se usa si
+   Supabase no responde, y en index.html para el rótulo de precios.
+   Cambiarlo aquí NO cambia la web mientras Supabase funcione.
+
    Los 15 destinos del MVP con los precios buscados a mano para el finde
    del 13 al 15 de noviembre de 2026 (2 noches, 1 adulto), en euros y
    por persona. Fuente: Google Flights, Booking.com y webs oficiales de

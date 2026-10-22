@@ -41,9 +41,13 @@ function estaAutenticado() {
   return Boolean(sesion && sesion.access_token);
 }
 
-// El panel de admin queda para la Fase 2: de momento nadie es admin.
+// Solo para enseñar u ocultar el panel. Quien decide de verdad es
+// Supabase: las reglas RLS y admin_usuarios() miran el mismo rol en
+// el token (ver supabase/admin.sql).
 function esAdmin() {
-  return false;
+  const sesion = sesionGuardada();
+  const meta = sesion && sesion.user && sesion.user.app_metadata;
+  return Boolean(meta && meta.role === "admin");
 }
 
 function emailActual() {

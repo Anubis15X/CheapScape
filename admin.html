@@ -36,31 +36,31 @@
     </nav>
   </header>
 
-  <!-- Si no hay sesión de admin, se redirige (ver js/admin.js) -->
+  <!-- Si no eres admin, se redirige (ver js/admin.js) -->
   <main class="hero-bg page-padding">
     <div class="container">
       <span class="section-eyebrow">Solo administradores</span>
       <h1 class="section-title">Panel de control</h1>
       <p class="section-subtitle" style="margin: 0.5rem 0 1.5rem">
-        Datos reales de la base de datos (Postgres, en tu VM local).
+        Datos reales de Supabase. Lo que guardes aquí se usa al momento en la web.
       </p>
 
       <div class="admin-stats">
         <div class="admin-stat glass">
-          <div class="stat-value" id="stat-total">0</div>
-          <div class="stat-label">Usuarios totales</div>
+          <div class="stat-value" id="stat-total">–</div>
+          <div class="stat-label">Usuarios</div>
         </div>
         <div class="admin-stat glass">
-          <div class="stat-value" id="stat-admins">0</div>
-          <div class="stat-label">Administradores</div>
+          <div class="stat-value" id="stat-google">–</div>
+          <div class="stat-label">Entran con Google</div>
         </div>
         <div class="admin-stat glass">
-          <div class="stat-value" id="stat-hoy">0</div>
-          <div class="stat-label">Altas hoy</div>
+          <div class="stat-value" id="stat-semana">–</div>
+          <div class="stat-label">Altas últimos 7 días</div>
         </div>
         <div class="admin-stat glass">
-          <div class="stat-value">Demo</div>
-          <div class="stat-label">Estado del backend</div>
+          <div class="stat-value" id="stat-destinos">–</div>
+          <div class="stat-label">Destinos</div>
         </div>
       </div>
 
@@ -69,15 +69,15 @@
           <h2 style="font-size: 1.1rem">Usuarios</h2>
           <button id="btn-refrescar" class="btn glass btn-glass btn-small" type="button">↻ Refrescar</button>
         </div>
-        <p id="admin-aviso" class="field-error"></p>
         <div style="overflow-x: auto">
           <table class="admin-table">
             <thead>
               <tr>
                 <th>Email</th>
-                <th>Rol</th>
+                <th>Entra con</th>
                 <th>Alta</th>
-                <th>Acciones</th>
+                <th>Último acceso</th>
+                <th>Rol</th>
               </tr>
             </thead>
             <tbody id="tabla-usuarios"></tbody>
@@ -85,9 +85,18 @@
         </div>
       </div>
 
-      <button id="btn-cerrar-sesion" class="btn glass btn-glass" type="button" style="margin-top: 1.5rem">
-        Cerrar sesión
-      </button>
+      <div class="account-card glass" style="margin-top: 1.5rem">
+        <h2 style="font-size: 1.1rem">Precios de los destinos</h2>
+        <p class="account-texto">
+          Precios por persona, en euros. El alojamiento es el precio de
+          2 noches: la web lo pasa a precio por noche y lo multiplica por
+          las noches del viaje. Deja un campo vacío si no hay dato (ese
+          destino no saldrá desde ese origen).
+        </p>
+        <div id="lista-destinos" class="admin-destinos">Cargando...</div>
+      </div>
+
+      <a href="usuario.html" class="btn glass btn-glass" style="margin-top: 1.5rem">← Volver a Mi cuenta</a>
     </div>
   </main>
 
@@ -126,6 +135,7 @@
 
   <script src="js/cursor.js"></script>
   <script src="js/nav.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.min.js"></script>
   <script src="js/config.js"></script>
   <script src="js/auth.js"></script>
   <script src="js/authHeader.js"></script>

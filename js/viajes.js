@@ -3,7 +3,8 @@
    =========================================================
    Antes estas dos funciones pedían el Top 3 y el detalle al backend
    por fetch (/api/busquedas y /api/viajes/:id). Ahora los calcula
-   js/motor.js: el Top 3 con la tabla pública de js/destinos.js y el
+   js/motor.js: el Top 3 con la tabla pública "destinos" de Supabase
+   (o js/destinos.js si no responde) y el
    detalle juntándola con la parte protegida de Supabase. Se mantienen
    los mismos nombres y la misma respuesta ({ ok, ... }) para que
    resultados.js y viaje.js no tengan que cambiar su forma de llamarlas,
@@ -19,6 +20,7 @@ async function buscarTop3(origen, fechaSalida, fechaLlegada, presupuesto, compar
   if (!AEROPUERTO_ORIGEN[origen]) {
     return { ok: false, error: "De momento solo buscamos viajes desde Madrid o Barcelona." };
   }
+  await cargarDestinos();
   const resultado = calcularTop3(origen, presupuesto, compartido, nochesEntre(fechaSalida, fechaLlegada));
   return { ok: true, trips: resultado.trips, minimo: resultado.minimo };
 }
@@ -31,6 +33,7 @@ async function buscarTop3(origen, fechaSalida, fechaLlegada, presupuesto, compar
 async function obtenerDetalleViaje(id, busqueda) {
   const b = busqueda || {};
   try {
+    await cargarDestinos();
     const detalle = await calcularDetalle(id, b.origen, Boolean(b.compartido), b.fechaSalida, b.fechaLlegada);
     if (!detalle) {
       return { ok: false, error: "No se pudo cargar el detalle." };
