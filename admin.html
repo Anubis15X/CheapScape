@@ -69,6 +69,7 @@
           <h2 style="font-size: 1.1rem">Usuarios</h2>
           <button id="btn-refrescar" class="btn glass btn-glass btn-small" type="button">↻ Refrescar</button>
         </div>
+        <p id="usuarios-aviso" class="admin-guardado" role="status"></p>
         <div style="overflow-x: auto">
           <table class="admin-table">
             <thead>
@@ -78,6 +79,8 @@
                 <th>Alta</th>
                 <th>Último acceso</th>
                 <th>Rol</th>
+                <th>Estado</th>
+                <th>Acciones</th>
               </tr>
             </thead>
             <tbody id="tabla-usuarios"></tbody>
@@ -99,6 +102,20 @@
       <a href="usuario.html" class="btn glass btn-glass" style="margin-top: 1.5rem">← Volver a Mi cuenta</a>
     </div>
   </main>
+
+  <!-- Confirmación de las acciones sobre usuarios (ver confirmar() en
+       js/admin.js). Sustituye a window.confirm, que algunos navegadores
+       integrados no muestran. -->
+  <div id="confirmar-overlay" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="confirmar-texto">
+    <div class="modal-box glass-dark">
+      <h2 style="font-size: 1.1rem">¿Seguro?</h2>
+      <p id="confirmar-texto"></p>
+      <div class="admin-acciones" style="margin-top: 1.25rem">
+        <button id="confirmar-si" class="btn btn-accent btn-small" type="button">Sí, hazlo</button>
+        <button id="confirmar-no" class="btn glass btn-glass btn-small" type="button">Cancelar</button>
+      </div>
+    </div>
+  </div>
 
   <footer class="site-footer">
     <div class="container footer-grid">

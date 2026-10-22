@@ -188,8 +188,19 @@ Proyecto Supabase "cheapscape" (región West EU, Irlanda), plan gratis.
   cualquiera, solo un admin la edita), deja a un admin editar
   `detalles_destino` y crea `admin_usuarios()`, que da error si no eres
   admin. Para hacer admin a otra persona: el mismo `update` del SQL con
-  su email, y que vuelva a entrar. Comprobado: un visitante anónimo
-  recibe "permission denied" al editar y al pedir la lista de usuarios.
+  su email, o el botón "Hacer admin" del panel. Comprobado: un visitante
+  anónimo recibe "permission denied" al editar y al pedir la lista de
+  usuarios.
+- **Gestión de usuarios (22-oct-2026):** `supabase/admin_usuarios.sql`
+  (se ejecuta después de `admin.sql`) añade `admin_cambiar_rol()`,
+  `admin_banear()` (1, 7 o 30 días o para siempre; cierra sus sesiones)
+  y `admin_eliminar()`. Todas comprueban en el servidor que eres admin y
+  no dejan que un admin se toque a sí mismo. `es_admin()` mira ahora el
+  rol en `auth.users` y no en el token, así que quitar el admin vale al
+  momento. Un baneado no puede entrar ni renovar la sesión; si tenía la
+  web abierta, le dura como mucho 1 hora (lo que dura su token). Las
+  confirmaciones son un modal de la página, no `window.confirm`, que el
+  navegador integrado de la app no muestra.
 - **Cuenta de Google del proyecto:** `cheapscape.notificaciones@gmail.com`
   (creada el 21-oct-2026) fue **suspendida por Google** el 22-oct-2026.
   Pendiente de recurso o de sustituirla. Las contraseñas las guarda Jose

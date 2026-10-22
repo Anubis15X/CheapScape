@@ -29,20 +29,157 @@ function celda(texto) {
 
 // ---------- Usuarios ----------
 
+// Opciones del desplegable de baneo: días (0 = para siempre).
+const OPCIONES_BANEO = [
+  { dias: 1, texto: "1 día" },
+  { dias: 7, texto: "7 días" },
+  { dias: 30, texto: "30 días" },
+  { dias: 0, texto: "Para siempre" },
+];
+
+// Pregunta en un modal de la página y devuelve una promesa con true
+// (Sí) o false (Cancelar, clic fuera o Escape).
+function confirmar(mensaje) {
+  const overlay = document.getElementById("confirmar-overlay");
+  const si = document.getElementById("confirmar-si");
+  const no = document.getElementById("confirmar-no");
+  document.getElementById("confirmar-texto").textContent = mensaje;
+  overlay.classList.add("open");
+  no.focus();
+
+  return new Promise(function (resolver) {
+    function cerrar(respuesta) {
+      overlay.classList.remove("open");
+      si.removeEventListener("click", alSi);
+      no.removeEventListener("click", alNo);
+      overlay.removeEventListener("click", alFuera);
+      document.removeEventListener("keydown", alTecla);
+      resolver(respuesta);
+    }
+    function alSi() { cerrar(true); }
+    function alNo() { cerrar(false); }
+    function alFuera(e) { if (e.target === overlay) cerrar(false); }
+    function alTecla(e) { if (e.key === "Escape") cerrar(false); }
+    si.addEventListener("click", alSi);
+    no.addEventListener("click", alNo);
+    overlay.addEventListener("click", alFuera);
+    document.addEventListener("keydown", alTecla);
+  });
+}
+
+function avisoUsuarios(mensaje, esError) {
+  const aviso = document.getElementById("usuarios-aviso");
+  aviso.textContent = mensaje;
+  aviso.classList.toggle("es-error", Boolean(esError));
+}
+
+// Llama a una función de Supabase (admin_cambiar_rol, admin_banear,
+// admin_eliminar), enseña el resultado y recarga la lista. Los errores
+// vienen del propio servidor ("Solo administradores", "No puedes...").
+async function accionUsuario(funcion, parametros, textoOk) {
+  avisoUsuarios("Un momento...");
+  const respuesta = await clienteSupabase().rpc(funcion, parametros);
+  if (respuesta.error) {
+    avisoUsuarios("No se ha podido: " + respuesta.error.message, true);
+    return;
+  }
+  avisoUsuarios(textoOk);
+  cargarUsuarios();
+}
+
+function boton(texto, clase, alPulsar) {
+  const b = document.createElement("button");
+  b.type = "button";
+  b.className = "btn glass btn-glass btn-small " + (clase || "");
+  b.textContent = texto;
+  b.addEventListener("click", alPulsar);
+  return b;
+}
+
+function estadoUsuario(u) {
+  if (!u.baneado_hasta) return "Activo";
+  // Más de 50 años = "para siempre" (la función guarda 100).
+  if (new Date(u.baneado_hasta).getFullYear() - new Date().getFullYear() > 50) return "Baneado para siempre";
+  return "Baneado hasta " + fechaCorta(u.baneado_hasta);
+}
+
+function accionesUsuario(u, esUnoMismo) {
+  const td = document.createElement("td");
+  const caja = document.createElement("div");
+  caja.className = "admin-acciones";
+  td.appendChild(caja);
+
+  if (esUnoMismo) {
+    const span = document.createElement("span");
+    span.className = "admin-destino-extra";
+    span.textContent = "(tu cuenta)";
+    caja.appendChild(span);
+    return td;
+  }
+
+  caja.appendChild(boton(u.es_admin ? "Quitar admin" : "Hacer admin", "", async function () {
+    const nuevo = u.es_admin ? "usuario" : "admin";
+    const pregunta = u.es_admin
+      ? "¿Quitar el rol de administrador a " + u.email + "?"
+      : "¿Hacer administrador a " + u.email + "? Podrá cambiar precios y gestionar usuarios.";
+    if (!(await confirmar(pregunta))) return;
+    accionUsuario("admin_cambiar_rol", { p_id: u.id, p_rol: nuevo },
+      u.email + (nuevo === "admin" ? " ya es administrador." : " ya no es administrador."));
+  }));
+
+  if (u.baneado_hasta) {
+    caja.appendChild(boton("Quitar baneo", "", function () {
+      accionUsuario("admin_banear", { p_id: u.id, p_dias: null }, u.email + " puede volver a entrar.");
+    }));
+  } else {
+    const select = document.createElement("select");
+    select.className = "admin-select";
+    select.setAttribute("aria-label", "Banear a " + u.email);
+    const primera = document.createElement("option");
+    primera.value = "";
+    primera.textContent = "Banear…";
+    select.appendChild(primera);
+    OPCIONES_BANEO.forEach(function (op) {
+      const option = document.createElement("option");
+      option.value = String(op.dias);
+      option.textContent = op.texto;
+      select.appendChild(option);
+    });
+    select.addEventListener("change", async function () {
+      if (select.value === "") return;
+      const op = OPCIONES_BANEO.find(function (o) { return String(o.dias) === select.value; });
+      if (!(await confirmar("¿Banear a " + u.email + " (" + op.texto.toLowerCase() + ")? Se cerrará su sesión."))) {
+        select.value = "";
+        return;
+      }
+      accionUsuario("admin_banear", { p_id: u.id, p_dias: op.dias }, u.email + " baneado (" + op.texto.toLowerCase() + ").");
+    });
+    caja.appendChild(select);
+  }
+
+  caja.appendChild(boton("Eliminar", "btn-danger", async function () {
+    if (!(await confirmar("¿Eliminar la cuenta de " + u.email + "? Se borra para siempre y no se puede deshacer."))) return;
+    accionUsuario("admin_eliminar", { p_id: u.id }, "Cuenta de " + u.email + " eliminada.");
+  }));
+
+  return td;
+}
+
 async function cargarUsuarios() {
   const tbody = document.getElementById("tabla-usuarios");
-  tbody.innerHTML = '<tr><td colspan="5">Cargando...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="7">Cargando...</td></tr>';
 
   const respuesta = await clienteSupabase().rpc("admin_usuarios");
   if (respuesta.error) {
     tbody.innerHTML = "";
     const fila = document.createElement("tr");
-    const td = celda("No se pudo cargar la lista. ¿Has cerrado sesión y vuelto a entrar después de ejecutar supabase/admin.sql?");
-    td.colSpan = 5;
+    const td = celda("No se pudo cargar la lista. ¿Has ejecutado supabase/admin.sql y supabase/admin_usuarios.sql?");
+    td.colSpan = 7;
     fila.appendChild(td);
     tbody.appendChild(fila);
     return;
   }
+  const miId = ((sesionGuardada() || {}).user || {}).id;
 
   const usuarios = respuesta.data;
   const haceUnaSemana = Date.now() - 7 * 86400000;
@@ -62,6 +199,8 @@ async function cargarUsuarios() {
     fila.appendChild(celda(fechaCorta(u.alta)));
     fila.appendChild(celda(fechaCorta(u.ultimo_acceso)));
     fila.appendChild(celda(u.es_admin ? "Administrador" : "Usuario"));
+    fila.appendChild(celda(estadoUsuario(u)));
+    fila.appendChild(accionesUsuario(u, u.id === miId));
     tbody.appendChild(fila);
   });
 }
