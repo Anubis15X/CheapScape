@@ -34,7 +34,7 @@
     if (priceRow && body && card.querySelector(".price") && !card.querySelector(".price-origin")) {
       const caption = document.createElement("p");
       caption.className = "price-origin";
-      caption.textContent = "Precio de ejemplo, ida y vuelta desde Madrid";
+      caption.textContent = t("Precio de ejemplo, ida y vuelta desde Madrid");
       body.insertBefore(caption, priceRow);
     }
 

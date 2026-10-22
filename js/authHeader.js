@@ -9,12 +9,12 @@
 
     if (typeof estaAutenticado === "function" && estaAutenticado()) {
       // Los admin también van a "Mi cuenta"; desde ahí entran al panel.
-      boton.textContent = "Mi cuenta";
+      boton.textContent = t("Mi cuenta");
       boton.onclick = function () {
         window.location.href = "usuario.html";
       };
     } else {
-      boton.textContent = "Iniciar sesión";
+      boton.textContent = t("Iniciar sesión");
       boton.onclick = function () {
         window.location.href = "login.html";
       };

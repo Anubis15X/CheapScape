@@ -36,7 +36,7 @@ const VIDEOS_HERO = [
   function poner(indice) {
     const v = orden[indice];
     video.poster = "videos/" + v.id + ".jpg";
-    credito.textContent = v.ciudad + " · Vídeo: " + v.autor + " / Pexels";
+    credito.textContent = t(v.ciudad) + " · " + t("Vídeo") + ": " + v.autor + " / Pexels";
     if (soloFoto) return;
     video.src = "videos/" + v.id + ".mp4";
     video.play().catch(function () {

@@ -61,9 +61,9 @@ function prepararFormCuenta(raiz, opciones) {
     grupoRepetir.hidden = !crear;
     grupoPrivacidad.hidden = !crear;
     notaGoogle.hidden = crear;
-    boton.textContent = crear ? "Crear cuenta" : "Entrar";
+    boton.textContent = crear ? t("Crear cuenta") : t("Entrar");
     password.autocomplete = crear ? "new-password" : "current-password";
-    if (titulo) titulo.textContent = crear ? "Crear cuenta" : "Iniciar sesión";
+    if (titulo) titulo.textContent = crear ? t("Crear cuenta") : t("Iniciar sesión");
     limpiar();
   }
 
@@ -72,7 +72,7 @@ function prepararFormCuenta(raiz, opciones) {
 
   google.addEventListener("click", async function () {
     if (modo === "crear" && !privacidad.checked) {
-      mostrarError(avisoGoogle, "Tienes que marcar la casilla de privacidad y términos.");
+      mostrarError(avisoGoogle, t("Tienes que marcar la casilla de privacidad y términos."));
       return;
     }
     limpiar();
@@ -90,37 +90,37 @@ function prepararFormCuenta(raiz, opciones) {
     const valorPassword = password.value;
 
     if (!REGEX_EMAIL.test(valorEmail)) {
-      mostrarError(error, "Escribe un email válido.");
+      mostrarError(error, t("Escribe un email válido."));
       email.focus();
       return;
     }
     if (valorPassword.length < 6) {
-      mostrarError(error, "La contraseña debe tener al menos 6 caracteres.");
+      mostrarError(error, t("La contraseña debe tener al menos 6 caracteres."));
       password.focus();
       return;
     }
     if (modo === "crear") {
       if (repetir.value !== valorPassword) {
-        mostrarError(error, "Las dos contraseñas no coinciden.");
+        mostrarError(error, t("Las dos contraseñas no coinciden."));
         repetir.focus();
         return;
       }
       if (!privacidad.checked) {
-        mostrarError(error, "Tienes que marcar la casilla de privacidad y términos.");
+        mostrarError(error, t("Tienes que marcar la casilla de privacidad y términos."));
         return;
       }
     }
 
     limpiar();
     boton.disabled = true;
-    boton.textContent = modo === "crear" ? "Creando cuenta..." : "Entrando...";
+    boton.textContent = modo === "crear" ? t("Creando cuenta...") : t("Entrando...");
 
     const resultado = modo === "crear"
       ? await crearCuenta(valorEmail, valorPassword)
       : await iniciarSesion(valorEmail, valorPassword);
 
     boton.disabled = false;
-    boton.textContent = modo === "crear" ? "Crear cuenta" : "Entrar";
+    boton.textContent = modo === "crear" ? t("Crear cuenta") : t("Entrar");
 
     if (!resultado.ok) {
       mostrarError(error, resultado.error);

@@ -13,18 +13,18 @@ if (!estaAutenticado()) {
   // El nombre solo existe si entró con Google; con email, saludo genérico.
   const nombre = (meta.full_name || meta.name || "").split(" ")[0];
   if (nombre) {
-    document.getElementById("cuenta-saludo").textContent = "Hola, " + nombre;
+    document.getElementById("cuenta-saludo").textContent = t("Hola, {nombre}", { nombre: nombre });
   }
 
   const email = emailActual();
-  document.getElementById("cuenta-email").textContent = email || "(sin email guardado)";
+  document.getElementById("cuenta-email").textContent = email || t("(sin email guardado)");
   document.getElementById("cuenta-avatar").textContent = (nombre || email || "?").charAt(0).toUpperCase();
 
   document.getElementById("cuenta-metodo").textContent =
-    metodos.map(function (m) { return NOMBRES_METODO[m] || m; }).join(" · ") || "Email y contraseña";
+    metodos.map(function (m) { return t(NOMBRES_METODO[m] || m); }).join(" · ") || t("Email y contraseña");
 
   document.getElementById("cuenta-alta").textContent = usuario.created_at
-    ? new Date(usuario.created_at).toLocaleDateString("es-ES", { day: "numeric", month: "long", year: "numeric" })
+    ? new Date(usuario.created_at).toLocaleDateString(localeActual(), { day: "numeric", month: "long", year: "numeric" })
     : "—";
 
   document.getElementById("cuenta-admin").hidden = !esAdmin();

@@ -18,7 +18,7 @@
  */
 async function buscarTop3(origen, fechaSalida, fechaLlegada, presupuesto, compartido) {
   if (!AEROPUERTO_ORIGEN[origen]) {
-    return { ok: false, error: "De momento solo buscamos viajes desde Madrid o Barcelona." };
+    return { ok: false, error: t("De momento solo buscamos viajes desde Madrid o Barcelona.") };
   }
   await cargarDestinos();
   const resultado = calcularTop3(origen, presupuesto, compartido, nochesEntre(fechaSalida, fechaLlegada));
@@ -36,10 +36,10 @@ async function obtenerDetalleViaje(id, busqueda) {
     await cargarDestinos();
     const detalle = await calcularDetalle(id, b.origen, Boolean(b.compartido), b.fechaSalida, b.fechaLlegada);
     if (!detalle) {
-      return { ok: false, error: "No se pudo cargar el detalle." };
+      return { ok: false, error: t("No se pudo cargar el detalle.") };
     }
     return { ok: true, detalle: detalle };
   } catch (e) {
-    return { ok: false, error: "No se pudo contactar con el servidor." };
+    return { ok: false, error: t("No se pudo contactar con el servidor.") };
   }
 }

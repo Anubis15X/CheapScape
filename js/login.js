@@ -37,7 +37,7 @@ if (respuestaGoogle.has("access_token") || respuestaGoogle.has("error")) {
       const suspendida = /banned/i.test(respuestaGoogle.get("error_description") || "");
       loginOauthAviso.textContent = suspendida
         ? MENSAJE_CUENTA_SUSPENDIDA
-        : "No se pudo entrar con Google. Inténtalo de nuevo o usa tu email.";
+        : t("No se pudo entrar con Google. Inténtalo de nuevo o usa tu email.");
       loginOauthAviso.classList.add("visible");
     }
   })();

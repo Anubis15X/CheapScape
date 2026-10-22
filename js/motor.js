@@ -167,7 +167,7 @@ function calcularTop3(origen, presupuesto, compartido, noches) {
 
 function enlaceVuelos(origen, aeropuerto, salida, llegada) {
   const q = "Flights from " + AEROPUERTO_ORIGEN[origen] + " to " + aeropuerto + " on " + salida + " through " + llegada;
-  return "https://www.google.com/travel/flights?hl=es&curr=EUR&q=" + encodeURIComponent(q);
+  return "https://www.google.com/travel/flights?hl=" + idiomaActual() + "&curr=EUR&q=" + encodeURIComponent(q);
 }
 
 // Busca en Booking el alojamiento concreto ("Nombre, Ciudad"), para que
@@ -179,7 +179,7 @@ function enlaceAlojamiento(nombre, ciudad, salida, llegada) {
     checkout: llegada,
     group_adults: "1",
     no_rooms: "1",
-    lang: "es",
+    lang: idiomaActual() === "en" ? "en-gb" : "es",
   });
   return "https://www.booking.com/searchresults.es.html?" + params.toString();
 }
@@ -263,10 +263,10 @@ function fechaRevisionLegible() {
 }
 
 function textoAvisoPrecios() {
-  return (
+  return t(
     "Estimación orientativa: vuelos con precios de referencia del 13 al 15 de noviembre y " +
-    "alojamiento según su precio por noche, revisados el " + fechaRevisionLegible() +
-    ". No es una oferta: el precio final lo pone cada proveedor. " +
-    "Los enlaces de reserva pueden ser comerciales."
+      "alojamiento según su precio por noche, revisados el {fecha}. No es una oferta: el " +
+      "precio final lo pone cada proveedor. Los enlaces de reserva pueden ser comerciales.",
+    { fecha: fechaRevisionLegible() }
   );
 }

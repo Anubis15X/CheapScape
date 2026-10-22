@@ -231,6 +231,30 @@ barato; *exótico* = el más barato de los marcados como exóticos. Nunca
 se repite destino. `ahorroPct` = ahorro respecto a la media de los
 que caben. Si no cabe ninguno, se dice cuánto cuesta el más barato.
 
+### 3.3 Idiomas: español e inglés (22-oct-2026)
+
+Interruptor **ES | EN** en el header de todas las páginas. La elección
+se guarda en `localStorage` (`cheapscape_idioma`, explicado en la
+política de cookies) y al cambiar se recarga la página.
+
+- `js/textos-en.js`: diccionario español → inglés. **La clave es el
+  texto en español tal cual**, así que el HTML no lleva etiquetas
+  especiales. Si el texto tiene enlaces o negritas, la traducción va
+  con su HTML (mismos `href` e `id`).
+- `js/i18n.js`: añade el interruptor y, en inglés, cambia al cargar
+  los textos de la página que estén en el diccionario (párrafos,
+  textos sueltos, `placeholder`, `aria-label`, título y descripción).
+  Los JS usan `t("texto en español", { variable })` para lo que pintan
+  ellos (tarjetas, errores, detalle, PDF, panel admin), y
+  `localeActual()` / `formatearNota()` para fechas y notas.
+- **Si cambias un texto en español, cambia también su clave en
+  `textos-en.js`.** Si no, en inglés saldrá en español (no rompe nada).
+- Lo que no se traduce: lo que viene de Supabase en español (tipo de
+  alojamiento, medio de transporte, avisos del detalle) y el formato
+  de los campos de fecha, que lo pone el navegador según su idioma.
+- Los textos legales en inglés son una traducción de cortesía (lo dice
+  el aviso de "texto provisional"); manda la versión en español.
+
 ---
 
 ## 4. Hoja de ruta (rehaciendo desde cero, solo frontend)

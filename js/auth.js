@@ -65,7 +65,7 @@ function cerrarSesion() {
   }
 }
 
-const MENSAJE_YA_EXISTE = "Ya hay una cuenta con ese email. Entra desde la pestaña «Entrar».";
+const MENSAJE_YA_EXISTE = t("Ya hay una cuenta con ese email. Entra desde la pestaña «Entrar».");
 
 /**
  * Entra con una cuenta que ya existe. Devuelve { ok: true } o
@@ -78,11 +78,11 @@ async function iniciarSesion(email, password) {
     const { error } = await clienteSupabase().auth.signInWithPassword({ email, password });
     if (!error) return { ok: true };
     if (error.code === "invalid_credentials") {
-      return { ok: false, error: "Email o contraseña incorrectos. Si aún no tienes cuenta, créala en la pestaña «Crear cuenta»." };
+      return { ok: false, error: t("Email o contraseña incorrectos. Si aún no tienes cuenta, créala en la pestaña «Crear cuenta».") };
     }
     return { ok: false, error: traducirError(error) };
   } catch (e) {
-    return { ok: false, error: "No se pudo contactar con el servidor." };
+    return { ok: false, error: t("No se pudo contactar con el servidor.") };
   }
 }
 
@@ -104,11 +104,11 @@ async function crearCuenta(email, password) {
     }
 
     if (!data.session) {
-      return { ok: false, error: "Te hemos enviado un email para confirmar la cuenta. Ábrelo y vuelve a entrar." };
+      return { ok: false, error: t("Te hemos enviado un email para confirmar la cuenta. Ábrelo y vuelve a entrar.") };
     }
     return { ok: true };
   } catch (e) {
-    return { ok: false, error: "No se pudo contactar con el servidor." };
+    return { ok: false, error: t("No se pudo contactar con el servidor.") };
   }
 }
 
@@ -130,16 +130,16 @@ async function iniciarConGoogle(volverA) {
       options: { redirectTo: destino.href },
     });
     if (error) {
-      return { ok: false, error: "No se pudo conectar con Google. Inténtalo de nuevo." };
+      return { ok: false, error: t("No se pudo conectar con Google. Inténtalo de nuevo.") };
     }
     return { ok: true };
   } catch (e) {
-    return { ok: false, error: "No se pudo contactar con el servidor." };
+    return { ok: false, error: t("No se pudo contactar con el servidor.") };
   }
 }
 
 const MENSAJE_CUENTA_SUSPENDIDA =
-  "Tu cuenta está suspendida. Si crees que es un error, escríbenos a hola@cheapscape.com.";
+  t("Tu cuenta está suspendida. Si crees que es un error, escríbenos a hola@cheapscape.com.");
 
 /**
  * Pregunta a Supabase si la sesión guardada sigue valiendo (no la han
@@ -169,5 +169,5 @@ function traducirError(error) {
     email_address_invalid: "Ese email no es válido.",
     email_not_confirmed: "Tienes que confirmar tu email antes de entrar.",
   };
-  return mensajes[error.code] || "No se pudo iniciar sesión. Inténtalo de nuevo.";
+  return t(mensajes[error.code] || "No se pudo iniciar sesión. Inténtalo de nuevo.");
 }

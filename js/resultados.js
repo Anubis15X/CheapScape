@@ -36,18 +36,18 @@ function pintarTarjeta(trip, origen) {
 
   const tagsHtml = [];
   if (trip.vueloDirecto) {
-    tagsHtml.push('<span class="tag">Vuelo directo</span>');
+    tagsHtml.push('<span class="tag">' + t("Vuelo directo") + "</span>");
   }
   tagsHtml.push(
     '<span class="tag">' +
-      (trip.tipoAlojamiento === "compartido" ? "Hostel compartido" : "Habitación privada") +
+      (trip.tipoAlojamiento === "compartido" ? t("Hostel compartido") : t("Habitación privada")) +
       " · " +
-      trip.nota.toFixed(1).replace(".", ",") +
+      formatearNota(trip.nota) +
       "/10</span>"
   );
   if (trip.ahorroPct > 0) {
     tagsHtml.push(
-      '<span class="tag tag-ahorro">Ahorras un ' + trip.ahorroPct + "% vs la media</span>"
+      '<span class="tag tag-ahorro">' + t("Ahorras un {pct}% vs la media", { pct: trip.ahorroPct }) + "</span>"
     );
   }
 
@@ -60,16 +60,16 @@ function pintarTarjeta(trip, origen) {
     '<span class="badge glass-dark">' +
     etiqueta.emoji +
     " " +
-    etiqueta.label +
+    t(etiqueta.label) +
     "</span>" +
     "</div>" +
     '<div class="trip-card-body">' +
     "<div>" +
     "<h3>" +
-    trip.destino +
+    t(trip.destino) +
     "</h3>" +
     '<p class="pais">' +
-    trip.pais +
+    t(trip.pais) +
     "</p>" +
     "</div>" +
     '<div class="tags">' +
@@ -80,13 +80,11 @@ function pintarTarjeta(trip, origen) {
     '<span class="price">' +
     trip.precioTotal +
     "€</span>" +
-    '<p class="price-origin">Total estimado desde ' +
-    origen +
-    " · " +
-    trip.noches +
-    " noches</p>" +
+    '<p class="price-origin">' +
+    t("Total estimado desde {origen} · {noches} noches", { origen: origen, noches: trip.noches }) +
+    "</p>" +
     "</div>" +
-    '<button class="btn btn-accent btn-ver-detalles" type="button">Ver detalles</button>' +
+    '<button class="btn btn-accent btn-ver-detalles" type="button">' + t("Ver detalles") + "</button>" +
     "</div>" +
     "</div>";
 
@@ -165,11 +163,11 @@ function formatearFecha(iso) {
   const partes = iso.split("-");
   if (partes.length !== 3) return iso;
   const fecha = new Date(Number(partes[0]), Number(partes[1]) - 1, Number(partes[2]));
-  return fecha.toLocaleDateString("es-ES", { day: "numeric", month: "short", year: "numeric" });
+  return fecha.toLocaleDateString(localeActual(), { day: "numeric", month: "short", year: "numeric" });
 }
 
 function formatearRangoFechas(salida, llegada) {
-  if (!salida && !llegada) return "Fechas por elegir";
+  if (!salida && !llegada) return t("Fechas por elegir");
   if (salida && llegada) return formatearFecha(salida) + " – " + formatearFecha(llegada);
   return formatearFecha(salida || llegada);
 }
@@ -188,7 +186,7 @@ document.querySelectorAll('.nav-link[href="index.html"]').forEach(function (link
     return;
   }
 
-  document.getElementById("titulo-resultados").textContent = "Buscando tu Top 3...";
+  document.getElementById("titulo-resultados").textContent = t("Buscando tu Top 3...");
   document.getElementById("subtitulo-resultados").textContent = "";
 
   window.sessionStorage.setItem(
@@ -222,13 +220,13 @@ document.querySelectorAll('.nav-link[href="index.html"]').forEach(function (link
     document.getElementById("sin-resultados-presupuesto").textContent = presupuesto + "€";
     if (resultado.minimo) {
       document.getElementById("sin-resultados-minimo").textContent =
-        ": el viaje más barato desde " + origen + " sale por " + resultado.minimo + "€" +
-        (compartido ? "" : " (o menos si te vale dormir en habitación compartida)");
+        t(": el viaje más barato desde {origen} sale por {precio}€", { origen: origen, precio: resultado.minimo }) +
+        (compartido ? "" : t(" (o menos si te vale dormir en habitación compartida)"));
     }
   } else {
-    document.getElementById("titulo-resultados").textContent = "Tu Top " + trips.length + " desde " + origen;
+    document.getElementById("titulo-resultados").textContent = t("Tu Top {n} desde {origen}", { n: trips.length, origen: origen });
     document.getElementById("subtitulo-resultados").textContent =
-      "Presupuesto máximo: " + presupuesto + "€ · " + formatearRangoFechas(fechaSalida, fechaLlegada);
+      t("Presupuesto máximo: {presupuesto}€", { presupuesto: presupuesto }) + " · " + formatearRangoFechas(fechaSalida, fechaLlegada);
 
     document.getElementById("aviso-precios").textContent = textoAvisoPrecios();
 

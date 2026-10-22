@@ -35,27 +35,27 @@ form.addEventListener("submit", function (event) {
   const presupuesto = Number(document.getElementById("presupuesto").value);
 
   if (!origen) {
-    mostrarError("Dinos desde dónde viajas.");
+    mostrarError(t("Dinos desde dónde viajas."));
     return;
   }
   if (!fechaSalida) {
-    mostrarError("Elige una fecha de salida.");
+    mostrarError(t("Elige una fecha de salida."));
     return;
   }
   if (fechaSalida < hoyISO) {
-    mostrarError("La fecha de salida no puede ser anterior a hoy.");
+    mostrarError(t("La fecha de salida no puede ser anterior a hoy."));
     return;
   }
   if (!fechaLlegada) {
-    mostrarError("Elige una fecha de vuelta.");
+    mostrarError(t("Elige una fecha de vuelta."));
     return;
   }
   if (fechaLlegada <= fechaSalida) {
-    mostrarError("La vuelta tiene que ser al menos un día después de la salida.");
+    mostrarError(t("La vuelta tiene que ser al menos un día después de la salida."));
     return;
   }
   if (!presupuesto || presupuesto <= 0) {
-    mostrarError("El presupuesto tiene que ser mayor que 0€.");
+    mostrarError(t("El presupuesto tiene que ser mayor que 0€."));
     return;
   }
 

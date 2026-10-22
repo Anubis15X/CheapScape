@@ -270,6 +270,58 @@ a {
   }
 }
 
+/* Interruptor de idioma ES | EN (lo añade js/i18n.js). */
+.idioma-switch {
+  display: inline-flex;
+  flex-shrink: 0;
+  margin-left: auto;
+  padding: 0.2rem;
+  border-radius: 50px;
+  background: rgba(43, 32, 25, 0.07);
+}
+
+.idioma-opcion {
+  padding: 0.3rem 0.6rem;
+  border: 0;
+  border-radius: 50px;
+  background: transparent;
+  color: var(--cs-ink-soft);
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+
+.idioma-opcion:hover {
+  color: var(--cs-ink);
+}
+
+.idioma-opcion[aria-pressed="true"] {
+  background: var(--cs-terracotta-700);
+  color: var(--cs-white);
+}
+
+.idioma-opcion:focus-visible {
+  outline: 2px solid var(--cs-terracotta-500);
+  outline-offset: 2px;
+}
+
+.idioma-switch ~ .nav-toggle {
+  margin-left: 0.25rem;
+}
+
+@media (min-width: 860px) {
+  /* Con el interruptor, el menú sigue centrado entre logo y botones. */
+  .site-header-inner .main-nav {
+    margin: 0 auto;
+  }
+
+  .idioma-switch {
+    margin-left: 0;
+  }
+}
+
 .nav-toggle {
   display: inline-flex;
   margin-left: auto;

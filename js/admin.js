@@ -18,7 +18,7 @@ if (!esAdmin()) {
 }
 
 function fechaCorta(iso) {
-  return iso ? new Date(iso).toLocaleDateString("es-ES", { day: "2-digit", month: "2-digit", year: "numeric" }) : "—";
+  return iso ? new Date(iso).toLocaleDateString(localeActual(), { day: "2-digit", month: "2-digit", year: "numeric" }) : "—";
 }
 
 function celda(texto) {
@@ -31,10 +31,10 @@ function celda(texto) {
 
 // Opciones del desplegable de baneo: días (0 = para siempre).
 const OPCIONES_BANEO = [
-  { dias: 1, texto: "1 día" },
-  { dias: 7, texto: "7 días" },
-  { dias: 30, texto: "30 días" },
-  { dias: 0, texto: "Para siempre" },
+  { dias: 1, texto: t("1 día") },
+  { dias: 7, texto: t("7 días") },
+  { dias: 30, texto: t("30 días") },
+  { dias: 0, texto: t("Para siempre") },
 ];
 
 // Pregunta en un modal de la página y devuelve una promesa con true
@@ -77,10 +77,10 @@ function avisoUsuarios(mensaje, esError) {
 // admin_eliminar), enseña el resultado y recarga la lista. Los errores
 // vienen del propio servidor ("Solo administradores", "No puedes...").
 async function accionUsuario(funcion, parametros, textoOk) {
-  avisoUsuarios("Un momento...");
+  avisoUsuarios(t("Un momento..."));
   const respuesta = await clienteSupabase().rpc(funcion, parametros);
   if (respuesta.error) {
-    avisoUsuarios("No se ha podido: " + respuesta.error.message, true);
+    avisoUsuarios(t("No se ha podido: {motivo}", { motivo: t(respuesta.error.message) }), true);
     return;
   }
   avisoUsuarios(textoOk);
@@ -97,10 +97,10 @@ function boton(texto, clase, alPulsar) {
 }
 
 function estadoUsuario(u) {
-  if (!u.baneado_hasta) return "Activo";
+  if (!u.baneado_hasta) return t("Activo");
   // Más de 50 años = "para siempre" (la función guarda 100).
-  if (new Date(u.baneado_hasta).getFullYear() - new Date().getFullYear() > 50) return "Baneado para siempre";
-  return "Baneado hasta " + fechaCorta(u.baneado_hasta);
+  if (new Date(u.baneado_hasta).getFullYear() - new Date().getFullYear() > 50) return t("Baneado para siempre");
+  return t("Baneado hasta {fecha}", { fecha: fechaCorta(u.baneado_hasta) });
 }
 
 function accionesUsuario(u, esUnoMismo) {
@@ -112,32 +112,32 @@ function accionesUsuario(u, esUnoMismo) {
   if (esUnoMismo) {
     const span = document.createElement("span");
     span.className = "admin-destino-extra";
-    span.textContent = "(tu cuenta)";
+    span.textContent = t("(tu cuenta)");
     caja.appendChild(span);
     return td;
   }
 
-  caja.appendChild(boton(u.es_admin ? "Quitar admin" : "Hacer admin", "", async function () {
+  caja.appendChild(boton(u.es_admin ? t("Quitar admin") : t("Hacer admin"), "", async function () {
     const nuevo = u.es_admin ? "usuario" : "admin";
     const pregunta = u.es_admin
-      ? "¿Quitar el rol de administrador a " + u.email + "?"
-      : "¿Hacer administrador a " + u.email + "? Podrá cambiar precios y gestionar usuarios.";
+      ? t("¿Quitar el rol de administrador a {email}?", { email: u.email })
+      : t("¿Hacer administrador a {email}? Podrá cambiar precios y gestionar usuarios.", { email: u.email });
     if (!(await confirmar(pregunta))) return;
     accionUsuario("admin_cambiar_rol", { p_id: u.id, p_rol: nuevo },
-      u.email + (nuevo === "admin" ? " ya es administrador." : " ya no es administrador."));
+      t(nuevo === "admin" ? "{email} ya es administrador." : "{email} ya no es administrador.", { email: u.email }));
   }));
 
   if (u.baneado_hasta) {
-    caja.appendChild(boton("Quitar baneo", "", function () {
-      accionUsuario("admin_banear", { p_id: u.id, p_dias: null }, u.email + " puede volver a entrar.");
+    caja.appendChild(boton(t("Quitar baneo"), "", function () {
+      accionUsuario("admin_banear", { p_id: u.id, p_dias: null }, t("{email} puede volver a entrar.", { email: u.email }));
     }));
   } else {
     const select = document.createElement("select");
     select.className = "admin-select";
-    select.setAttribute("aria-label", "Banear a " + u.email);
+    select.setAttribute("aria-label", t("Banear a {email}", { email: u.email }));
     const primera = document.createElement("option");
     primera.value = "";
-    primera.textContent = "Banear…";
+    primera.textContent = t("Banear…");
     select.appendChild(primera);
     OPCIONES_BANEO.forEach(function (op) {
       const option = document.createElement("option");
@@ -148,18 +148,18 @@ function accionesUsuario(u, esUnoMismo) {
     select.addEventListener("change", async function () {
       if (select.value === "") return;
       const op = OPCIONES_BANEO.find(function (o) { return String(o.dias) === select.value; });
-      if (!(await confirmar("¿Banear a " + u.email + " (" + op.texto.toLowerCase() + ")? Se cerrará su sesión."))) {
+      if (!(await confirmar(t("¿Banear a {email} ({tiempo})? Se cerrará su sesión.", { email: u.email, tiempo: op.texto.toLowerCase() })))) {
         select.value = "";
         return;
       }
-      accionUsuario("admin_banear", { p_id: u.id, p_dias: op.dias }, u.email + " baneado (" + op.texto.toLowerCase() + ").");
+      accionUsuario("admin_banear", { p_id: u.id, p_dias: op.dias }, t("{email} baneado ({tiempo}).", { email: u.email, tiempo: op.texto.toLowerCase() }));
     });
     caja.appendChild(select);
   }
 
-  caja.appendChild(boton("Eliminar", "btn-danger", async function () {
-    if (!(await confirmar("¿Eliminar la cuenta de " + u.email + "? Se borra para siempre y no se puede deshacer."))) return;
-    accionUsuario("admin_eliminar", { p_id: u.id }, "Cuenta de " + u.email + " eliminada.");
+  caja.appendChild(boton(t("Eliminar"), "btn-danger", async function () {
+    if (!(await confirmar(t("¿Eliminar la cuenta de {email}? Se borra para siempre y no se puede deshacer.", { email: u.email })))) return;
+    accionUsuario("admin_eliminar", { p_id: u.id }, t("Cuenta de {email} eliminada.", { email: u.email }));
   }));
 
   return td;
@@ -173,7 +173,7 @@ async function cargarUsuarios() {
   if (respuesta.error) {
     tbody.innerHTML = "";
     const fila = document.createElement("tr");
-    const td = celda("No se pudo cargar la lista. ¿Has ejecutado supabase/admin.sql y supabase/admin_usuarios.sql?");
+    const td = celda(t("No se pudo cargar la lista. ¿Has ejecutado supabase/admin.sql y supabase/admin_usuarios.sql?"));
     td.colSpan = 7;
     fila.appendChild(td);
     tbody.appendChild(fila);
@@ -198,7 +198,7 @@ async function cargarUsuarios() {
     fila.appendChild(celda((u.metodos || []).map(function (m) { return NOMBRES_METODO_ADMIN[m] || m; }).join(" · ") || "—"));
     fila.appendChild(celda(fechaCorta(u.alta)));
     fila.appendChild(celda(fechaCorta(u.ultimo_acceso)));
-    fila.appendChild(celda(u.es_admin ? "Administrador" : "Usuario"));
+    fila.appendChild(celda(u.es_admin ? t("Administrador") : t("Usuario")));
     fila.appendChild(celda(estadoUsuario(u)));
     fila.appendChild(accionesUsuario(u, u.id === miId));
     tbody.appendChild(fila);
@@ -215,7 +215,7 @@ async function cargarDestinosAdmin() {
     .order("orden");
 
   if (respuesta.error || !respuesta.data.length) {
-    lista.textContent = "No se pudieron cargar los destinos. ¿Has ejecutado supabase/admin.sql?";
+    lista.textContent = t("No se pudieron cargar los destinos. ¿Has ejecutado supabase/admin.sql?");
     return;
   }
 
@@ -287,10 +287,10 @@ function tarjetaDestino(fila) {
 
   const summary = document.createElement("summary");
   const nombre = document.createElement("strong");
-  nombre.textContent = d.destino;
+  nombre.textContent = t(d.destino);
   const extra = document.createElement("span");
   extra.className = "admin-destino-extra";
-  extra.textContent = d.pais + " · actualizado " + fechaCorta(fila.actualizado);
+  extra.textContent = t(d.pais) + " · " + t("actualizado {fecha}", { fecha: fechaCorta(fila.actualizado) });
   summary.appendChild(nombre);
   summary.appendChild(extra);
   details.appendChild(summary);
@@ -301,30 +301,30 @@ function tarjetaDestino(fila) {
   const vuelos = [];
   ORIGENES.forEach(function (origen) {
     if (!d.vuelos[origen]) return;
-    vuelos.push(campo("Desde " + origen + " (€, a " + d.vuelos[origen].aeropuerto + ")", "vuelos." + origen + ".precio", "precio", d));
-    vuelos.push(campo("Directo", "vuelos." + origen + ".directo", "check", d));
+    vuelos.push(campo(t("Desde {origen} (€, a {aeropuerto})", { origen: origen, aeropuerto: d.vuelos[origen].aeropuerto }), "vuelos." + origen + ".precio", "precio", d));
+    vuelos.push(campo(t("Directo"), "vuelos." + origen + ".directo", "check", d));
   });
-  form.appendChild(grupo("Vuelo ida y vuelta", vuelos));
+  form.appendChild(grupo(t("Vuelo ida y vuelta"), vuelos));
 
-  form.appendChild(grupo("Alojamiento (precio de 2 noches)", [
-    campo("Privado (€)", "alojamiento.privado.precio2Noches", "precio", d),
-    campo("Nota privado", "alojamiento.privado.nota", "nota", d),
-    campo("Compartido (€)", "alojamiento.compartido.precio2Noches", "precio", d),
-    campo("Nota compartido", "alojamiento.compartido.nota", "nota", d),
+  form.appendChild(grupo(t("Alojamiento (precio de 2 noches)"), [
+    campo(t("Privado (€)"), "alojamiento.privado.precio2Noches", "precio", d),
+    campo(t("Nota privado"), "alojamiento.privado.nota", "nota", d),
+    campo(t("Compartido (€)"), "alojamiento.compartido.precio2Noches", "precio", d),
+    campo(t("Nota compartido"), "alojamiento.compartido.nota", "nota", d),
   ]));
 
-  form.appendChild(grupo("Traslado aeropuerto ↔ centro", Object.keys(d.traslados).map(function (aeropuerto) {
-    return campo(aeropuerto + " ida y vuelta (€)", "traslados." + aeropuerto + ".precioIdaVuelta", "precio", d);
+  form.appendChild(grupo(t("Traslado aeropuerto ↔ centro"), Object.keys(d.traslados).map(function (aeropuerto) {
+    return campo(t("{aeropuerto} ida y vuelta (€)", { aeropuerto: aeropuerto }), "traslados." + aeropuerto + ".precioIdaVuelta", "precio", d);
   })));
 
-  form.appendChild(grupo("Otros", [campo("Cuenta como exótico", "exotico", "check", d)]));
+  form.appendChild(grupo(t("Otros"), [campo(t("Cuenta como exótico"), "exotico", "check", d)]));
 
   const pie = document.createElement("div");
   pie.className = "admin-form-pie";
   const boton = document.createElement("button");
   boton.type = "submit";
   boton.className = "btn btn-accent btn-small";
-  boton.textContent = "Guardar cambios";
+  boton.textContent = t("Guardar cambios");
   const aviso = document.createElement("p");
   aviso.className = "admin-guardado";
   aviso.setAttribute("role", "status");
@@ -352,7 +352,7 @@ function tarjetaDestino(fila) {
       const numero = Number(input.value);
       const maximo = input.dataset.tipo === "nota" ? 10 : Infinity;
       if (!isFinite(numero) || numero < 0 || numero > maximo) {
-        aviso.textContent = "Revisa los números: no pueden ser negativos y la nota va de 0 a 10.";
+        aviso.textContent = t("Revisa los números: no pueden ser negativos y la nota va de 0 a 10.");
         aviso.classList.add("es-error");
         input.focus();
         return;
@@ -361,7 +361,7 @@ function tarjetaDestino(fila) {
     }
 
     boton.disabled = true;
-    aviso.textContent = "Guardando...";
+    aviso.textContent = t("Guardando...");
     const ahora = new Date().toISOString();
     const respuesta = await clienteSupabase()
       .from("destinos")
@@ -372,14 +372,14 @@ function tarjetaDestino(fila) {
 
     // Si la regla RLS no deja guardar, Supabase no da error: devuelve 0 filas.
     if (respuesta.error || !respuesta.data || respuesta.data.length === 0) {
-      aviso.textContent = "No se ha guardado: el servidor no te reconoce como admin.";
+      aviso.textContent = t("No se ha guardado: el servidor no te reconoce como admin.");
       aviso.classList.add("es-error");
       return;
     }
 
     Object.assign(d, nuevos);
-    extra.textContent = d.pais + " · actualizado " + fechaCorta(ahora);
-    aviso.textContent = "Guardado. Ya se usa en la web.";
+    extra.textContent = t(d.pais) + " · " + t("actualizado {fecha}", { fecha: fechaCorta(ahora) });
+    aviso.textContent = t("Guardado. Ya se usa en la web.");
   });
 
   details.appendChild(form);
