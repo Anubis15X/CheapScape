@@ -29,6 +29,8 @@
   --cs-glass-bg-strong: rgba(255, 255, 255, 0.92);
   --cs-glass-border: rgba(43, 32, 25, 0.08);
   --cs-glass-dark-bg: rgba(43, 32, 25, 0.55);
+  /* Alto de la cabecera fija (el mayor, en escritorio). */
+  --cs-header-alto: 66px;
   /* Capa sobre el vídeo del hero: tinta oscura, más densa abajo. */
   --cs-hero-overlay: linear-gradient(180deg, rgba(43, 32, 25, 0.45) 0%, rgba(43, 32, 25, 0.6) 100%);
 
@@ -382,7 +384,11 @@ a {
   align-items: center;
   justify-content: center;
   text-align: center;
-  min-height: 85vh;
+  /* El vídeo ocupa toda la pantalla que deja libre la cabecera (que
+     mide 62-66 px), sin que asome la sección de abajo. dvh tiene en
+     cuenta la barra del navegador en móvil. */
+  min-height: calc(100vh - var(--cs-header-alto));
+  min-height: calc(100dvh - var(--cs-header-alto));
   padding: 3.5rem 1.5rem;
   overflow: hidden;
 }
