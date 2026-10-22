@@ -21,6 +21,19 @@
     }
   }
 
-  aplicar(document.querySelector(".btn-login-desktop"));
-  aplicar(document.querySelector("#main-nav-mobile .btn-login-mobile"));
+  function aplicarTodos() {
+    aplicar(document.querySelector(".btn-login-desktop"));
+    aplicar(document.querySelector("#main-nav-mobile .btn-login-mobile"));
+  }
+
+  aplicarTodos();
+
+  // En las páginas que cargan Supabase, se confirma con el servidor que
+  // la sesión sigue viva (si le han baneado o cerrado la sesión, deja
+  // de verse como conectado).
+  if (window.supabase && estaAutenticado()) {
+    comprobarSesionEnServidor().then(function (valida) {
+      if (!valida) aplicarTodos();
+    });
+  }
 })();

@@ -29,6 +29,12 @@ if (!estaAutenticado()) {
 
   document.getElementById("cuenta-admin").hidden = !esAdmin();
 
+  // Si el servidor ya no reconoce la sesión (baneado o cerrada desde
+  // otro sitio), fuera.
+  comprobarSesionEnServidor().then(function (valida) {
+    if (!valida) window.location.href = "login.html";
+  });
+
   document.getElementById("btn-cerrar-sesion").addEventListener("click", function () {
     cerrarSesion();
     window.location.href = "index.html";

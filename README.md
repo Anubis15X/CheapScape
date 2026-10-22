@@ -197,8 +197,11 @@ Proyecto Supabase "cheapscape" (región West EU, Irlanda), plan gratis.
   y `admin_eliminar()`. Todas comprueban en el servidor que eres admin y
   no dejan que un admin se toque a sí mismo. `es_admin()` mira ahora el
   rol en `auth.users` y no en el token, así que quitar el admin vale al
-  momento. Un baneado no puede entrar ni renovar la sesión; si tenía la
-  web abierta, le dura como mucho 1 hora (lo que dura su token). Las
+  momento. Banear corta el acceso al instante: `sesion_valida()` exige
+  en cada petición (detalle protegido y panel) que la sesión del token
+  siga existiendo y que el usuario no esté baneado, y la web pregunta al
+  servidor al cargar (`comprobarSesionEnServidor()`) y cierra la sesión
+  si ya no vale. Al intentar entrar ve "Tu cuenta está suspendida". Las
   confirmaciones son un modal de la página, no `window.confirm`, que el
   navegador integrado de la app no muestra.
 - **Cuenta de Google del proyecto:** `cheapscape.notificaciones@gmail.com`

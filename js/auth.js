@@ -132,8 +132,31 @@ async function iniciarConGoogle(volverA) {
   }
 }
 
+const MENSAJE_CUENTA_SUSPENDIDA =
+  "Tu cuenta está suspendida. Si crees que es un error, escríbenos a hola@cheapscape.com.";
+
+/**
+ * Pregunta a Supabase si la sesión guardada sigue valiendo (no la han
+ * cerrado ni han baneado al usuario). Si el servidor dice que no, la
+ * borra y devuelve false. Si no hay conexión, no toca nada.
+ */
+async function comprobarSesionEnServidor() {
+  if (!estaAutenticado() || !window.supabase) return estaAutenticado();
+  try {
+    const { error } = await clienteSupabase().auth.getUser();
+    if (error && error.status >= 400 && error.status < 500) {
+      cerrarSesion();
+      return false;
+    }
+  } catch (e) {
+    // Sin conexión: mejor no echar a nadie.
+  }
+  return true;
+}
+
 function traducirError(error) {
   const mensajes = {
+    user_banned: MENSAJE_CUENTA_SUSPENDIDA,
     weak_password: "La contraseña es demasiado débil. Usa al menos 6 caracteres.",
     over_email_send_rate_limit: "Demasiados intentos. Espera unos minutos y vuelve a probar.",
     over_request_rate_limit: "Demasiados intentos. Espera unos minutos y vuelve a probar.",
