@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mi cuenta — CheapScape</title>
+  <meta name="description" content="Tu cuenta en CheapScape." />
+  <link rel="stylesheet" href="css/fonts.css" />
+  <link rel="icon" href="imagenes/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" href="imagenes/favicon-32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="imagenes/favicon.png" />
+  <link rel="apple-touch-icon" href="imagenes/apple-touch-icon.png" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container site-header-inner">
+      <a href="index.html" class="logo-link">
+        <img src="imagenes/logo_cs.png" alt="CheapScape" class="logo-img" />
+      </a>
+      <nav class="main-nav">
+        <a href="index.html" class="nav-link">Explorar</a>
+        <a href="como-funciona.html" class="nav-link">Cómo funciona</a>
+        <a href="top-chollos.html" class="nav-link">Top Chollos</a>
+        <a href="quien-somos.html" class="nav-link">Quién somos</a>
+      </nav>
+      <button class="btn glass btn-glass btn-login-desktop" type="button">Iniciar sesión</button>
+      <button id="nav-toggle" class="nav-toggle" type="button" aria-label="Abrir menú">☰</button>
+    </div>
+    <nav id="main-nav-mobile" class="main-nav-mobile" hidden>
+      <a href="index.html" class="nav-link">Explorar</a>
+      <a href="como-funciona.html" class="nav-link">Cómo funciona</a>
+      <a href="top-chollos.html" class="nav-link">Top Chollos</a>
+      <a href="quien-somos.html" class="nav-link">Quién somos</a>
+      <button class="btn btn-accent btn-login-mobile" type="button" style="margin-top: 0.5rem">Iniciar sesión</button>
+    </nav>
+  </header>
+
+  <!-- Si no hay sesión, se redirige a login.html (ver js/usuario.js) -->
+  <main class="hero-bg page-padding">
+    <div class="container">
+      <span class="section-eyebrow">Tu cuenta</span>
+      <h1 id="cuenta-saludo" class="section-title">Hola de nuevo</h1>
+
+      <div class="account-grid">
+        <div class="account-card glass">
+          <div class="account-avatar" id="cuenta-avatar" aria-hidden="true"></div>
+          <p class="account-label">Sesión iniciada como</p>
+          <p id="cuenta-email" class="account-email"></p>
+          <dl class="account-datos">
+            <dt>Entras con</dt>
+            <dd id="cuenta-metodo"></dd>
+            <dt>Cuenta creada</dt>
+            <dd id="cuenta-alta"></dd>
+          </dl>
+          <button id="btn-cerrar-sesion" class="btn glass btn-glass" type="button" style="margin-top: 1.5rem; width: 100%">
+            Cerrar sesión
+          </button>
+        </div>
+
+        <div class="account-card glass">
+          <h2 style="font-size: 1.1rem">Qué te da tu cuenta</h2>
+          <ul class="account-lista">
+            <li>Ver el <strong>detalle completo</strong> de cada escapada del Top 3: vuelos con horarios, alojamiento exacto y cómo ir del aeropuerto al centro.</li>
+            <li>Descargar el <strong>itinerario en PDF</strong>.</li>
+            <li>Ir directo a reservar en cada web, con las fechas ya puestas.</li>
+          </ul>
+          <a href="index.html" class="btn btn-accent" style="margin-top: 1.25rem">Buscar una escapada</a>
+
+          <h2 style="font-size: 1.1rem; margin-top: 2rem">Tus datos</h2>
+          <p class="account-texto">
+            Solo guardamos tu email y la fecha de alta. No guardamos tus
+            búsquedas. Si quieres borrar tu cuenta, escríbenos a
+            <a href="mailto:hola@cheapscape.com">hola@cheapscape.com</a>
+            desde este mismo email. Más info en la
+            <a href="privacidad.html">política de privacidad</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <img src="imagenes/logo_cs.png" alt="CheapScape" class="footer-logo" />
+        <p>Tu escapada de fin de semana (vuelo + hotel), resuelta en un clic.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Explora</h4>
+        <a href="index.html">Explorar</a>
+        <a href="como-funciona.html">Cómo funciona</a>
+        <a href="top-chollos.html">Top Chollos</a>
+        <a href="quien-somos.html">Quién somos</a>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <a href="aviso-legal.html">Aviso legal</a>
+        <a href="privacidad.html">Política de privacidad</a>
+        <a href="cookies.html">Política de cookies</a>
+        <a href="terminos.html">Términos y condiciones</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contacto</h4>
+        <a href="mailto:hola@cheapscape.com">hola@cheapscape.com</a>
+        <a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://tiktok.com" target="_blank" rel="noopener">TikTok</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 CheapScape. Todos los derechos reservados.</p>
+      <p>Proyecto en fase de desarrollo — los precios y destinos mostrados son de ejemplo.</p>
+    </div>
+  </footer>
+
+  <script src="js/cursor.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/authHeader.js"></script>
+  <script src="js/usuario.js"></script>
+</body>
+</html>

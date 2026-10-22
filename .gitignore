@@ -1,0 +1,7 @@
+# Datos protegidos por el registro (hostels, horarios...): no se suben
+# nunca, ni a un repo privado. Viven en Supabase.
+supabase/
+
+# Variables de entorno y secretos
+.env
+.env.*

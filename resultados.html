@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tu Top 3 — CheapScape</title>
+  <meta name="description" content="Tu Top 3 de escapadas de fin de semana según tu presupuesto: el más barato, el mejor valorado y el más exótico." />
+  <link rel="stylesheet" href="css/fonts.css" />
+  <link rel="icon" href="imagenes/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" href="imagenes/favicon-32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="imagenes/favicon.png" />
+  <link rel="apple-touch-icon" href="imagenes/apple-touch-icon.png" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container site-header-inner">
+      <a href="index.html" class="logo-link">
+        <img src="imagenes/logo_cs.png" alt="CheapScape" class="logo-img" />
+      </a>
+      <nav class="main-nav">
+        <a href="index.html" class="nav-link">Explorar</a>
+        <a href="como-funciona.html" class="nav-link">Cómo funciona</a>
+        <a href="top-chollos.html" class="nav-link">Top Chollos</a>
+        <a href="quien-somos.html" class="nav-link">Quién somos</a>
+      </nav>
+      <button class="btn glass btn-glass btn-login-desktop" type="button">Iniciar sesión</button>
+      <button id="nav-toggle" class="nav-toggle" type="button" aria-label="Abrir menú">☰</button>
+    </div>
+    <nav id="main-nav-mobile" class="main-nav-mobile" hidden>
+      <a href="index.html" class="nav-link">Explorar</a>
+      <a href="como-funciona.html" class="nav-link">Cómo funciona</a>
+      <a href="top-chollos.html" class="nav-link">Top Chollos</a>
+      <a href="quien-somos.html" class="nav-link">Quién somos</a>
+      <button class="btn btn-accent btn-login-mobile" type="button" style="margin-top: 0.5rem">Iniciar sesión</button>
+    </nav>
+  </header>
+
+  <main class="hero-bg page-padding">
+    <div class="container">
+      <div id="sin-busqueda" hidden>
+        <p style="color: var(--cs-text-body)">
+          Falta tu búsqueda. Vuelve a la portada para indicar origen y
+          presupuesto.
+        </p>
+        <a href="index.html" class="btn btn-accent">Volver al buscador</a>
+      </div>
+
+      <div id="sin-resultados" hidden>
+        <a href="index.html" class="back-link">← Nueva búsqueda</a>
+        <p style="color: var(--cs-text-body); max-width: 480px">
+          Con <strong id="sin-resultados-presupuesto"></strong> no llegamos a
+          ningún destino de nuestra base ahora mismo. Prueba a subir el
+          presupuesto<span id="sin-resultados-minimo"></span>.
+        </p>
+        <a href="index.html" class="btn btn-accent" style="margin-top: 1rem">Probar con otro presupuesto</a>
+      </div>
+
+      <div id="error-busqueda" hidden>
+        <a href="index.html" class="back-link">← Nueva búsqueda</a>
+        <p id="error-busqueda-mensaje" style="color: var(--cs-text-body); max-width: 480px"></p>
+        <a href="index.html" class="btn btn-accent" style="margin-top: 1rem">Volver a intentarlo</a>
+      </div>
+
+      <div id="con-busqueda">
+        <a href="index.html" class="back-link">← Nueva búsqueda</a>
+        <h1 id="titulo-resultados">Tu Top 3</h1>
+        <p id="subtitulo-resultados" class="results-subtitle"></p>
+
+        <div id="cards-row" class="cards-row"></div>
+        <p id="aviso-precios" class="fine-print aviso-precios"></p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <img src="imagenes/logo_cs.png" alt="CheapScape" class="footer-logo" />
+        <p>Tu escapada de fin de semana (vuelo + hotel), resuelta en un clic.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Explora</h4>
+        <a href="index.html">Explorar</a>
+        <a href="como-funciona.html">Cómo funciona</a>
+        <a href="top-chollos.html">Top Chollos</a>
+        <a href="quien-somos.html">Quién somos</a>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <a href="aviso-legal.html">Aviso legal</a>
+        <a href="privacidad.html">Política de privacidad</a>
+        <a href="cookies.html">Política de cookies</a>
+        <a href="terminos.html">Términos y condiciones</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contacto</h4>
+        <a href="mailto:hola@cheapscape.com">hola@cheapscape.com</a>
+        <a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://tiktok.com" target="_blank" rel="noopener">TikTok</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 CheapScape. Todos los derechos reservados.</p>
+      <p>Proyecto en fase de desarrollo — los precios y destinos mostrados son de ejemplo.</p>
+    </div>
+  </footer>
+
+  <!-- Modal de Registro (Regwall) -->
+  <div id="modal-overlay" class="modal-overlay">
+    <div class="modal-box glass-dark">
+      <button id="modal-close" class="modal-close" type="button" aria-label="Cerrar">✕</button>
+
+      <h2>¡Casi lo tienes!</h2>
+      <p>
+        Descubre el hotel exacto y los horarios de tu vuelo a
+        <strong id="modal-destino"></strong> creando una cuenta gratis.
+      </p>
+
+      <div class="modal-oauth">
+        <button id="modal-google" class="btn glass btn-glass" type="button">
+          <span class="oauth-icon">
+            <svg viewBox="0 0 48 48" aria-hidden="true">
+              <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.9 32.6 29.4 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.6 6.1 29.6 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/>
+              <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 16 18.9 13 24 13c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.6 6.1 29.6 4 24 4c-7.6 0-14.1 4.3-17.7 10.7z"/>
+              <path fill="#4CAF50" d="M24 44c5.3 0 10.1-2 13.7-5.3l-6.3-5.3C29.4 35.4 26.8 36 24 36c-5.4 0-9.9-3.4-11.3-8.1l-6.6 5.1C9.8 39.6 16.3 44 24 44z"/>
+              <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-1.1 3-3.3 5.4-6 6.9l6.3 5.3C39.5 36.9 44 31.1 44 24c0-1.3-.1-2.4-.4-3.5z"/>
+            </svg>
+          </span>
+          Continuar con Google
+        </button>
+      </div>
+      <p id="modal-oauth-aviso" class="field-error" style="margin-top: 0.4rem"></p>
+
+      <div class="modal-divider">
+        <span class="line"></span>o<span class="line"></span>
+      </div>
+
+      <form id="modal-form" class="modal-form">
+        <input id="modal-email" type="email" required placeholder="tu@email.com" />
+        <input id="modal-password" type="password" required placeholder="Contraseña (mín. 6 caracteres)" />
+        <label class="check-privacidad">
+          <input id="modal-privacidad" type="checkbox" />
+          <span>He leído la <a href="privacidad.html" target="_blank">política de privacidad</a> y acepto los <a href="terminos.html" target="_blank">términos y condiciones</a></span>
+        </label>
+        <p id="modal-email-error" class="field-error"></p>
+        <button class="btn btn-accent" type="submit">
+          Crear cuenta / entrar
+        </button>
+      </form>
+
+      <p class="modal-switch">
+        ¿Ya tienes cuenta? <a href="login.html">Inicia sesión</a>
+      </p>
+
+      <p class="legal-note">
+        Los precios mostrados son estimados y dependen del proveedor final.
+      </p>
+    </div>
+  </div>
+
+  <script src="js/cursor.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/destinos.js"></script>
+  <script src="js/motor.js"></script>
+  <script src="js/viajes.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/authHeader.js"></script>
+  <script src="js/resultados.js"></script>
+</body>
+</html>

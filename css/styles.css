@@ -1,0 +1,1686 @@
+/* =========================================================
+   CheapScape — hoja de estilos
+   Estética propia de Jose: fondo claro, cálido (papel, no blanco
+   frío), terracota como color protagonista (viajes/cercanía) y un
+   verde-azulado como color de confianza (ahorro, sellos de
+   verificación). Fraunces en titulares e Inter en cuerpo.
+   ========================================================= */
+
+:root {
+  --cs-bg: #fbf2e7;
+  --cs-bg-alt: #f3e4cf;
+  --cs-white: #ffffff;
+  --cs-ink: #2b2019;
+  --cs-ink-soft: #5b4a3d;
+  --cs-ink-faint: #8a7a6a;
+  /* Nombre antiguo que aún usan algunas páginas para el texto normal. */
+  --cs-text-body: var(--cs-ink-soft);
+
+  /* Terracota: protagonista — precios, CTA, acento principal */
+  --cs-terracotta-700: #c8532a; /* acento principal (botones, enlaces) */
+  --cs-terracotta-600: #a8431f; /* hover del acento */
+  --cs-terracotta-500: #e08a5b; /* detalles, bordes al pasar el ratón */
+  --cs-terracotta-300: #f0c2a6; /* texto/iconos sobre fondo oscuro (chips) */
+
+  /* Verde-azulado: confianza — ahorro, sellos, segundo acento */
+  --cs-teal: #1d6b68;
+
+  --cs-glass-bg: rgba(255, 255, 255, 0.72);
+  --cs-glass-border: rgba(43, 32, 25, 0.08);
+  --cs-glass-dark-bg: rgba(43, 32, 25, 0.55);
+
+  /* Fraunces (serif de terminaciones redondeadas, elegante) en
+     titulares, Inter (sans) en cuerpo — servidas desde /fonts (ver
+     css/fonts.css). Si no cargan, cae en una serif/sans-serif del
+     sistema. */
+  --font-heading: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-body: "Inter", -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Foco de teclado visible en todo el sitio. */
+:focus-visible {
+  outline: 2px solid var(--cs-terracotta-700);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Sin esto, el atributo "hidden" de un elemento pierde frente a una
+   clase que le ponga display:flex/grid (p. ej. .center-message),
+   porque ambas reglas tienen la misma especificidad y la nuestra, al
+   ser del autor, gana sobre el estilo por defecto del navegador. */
+[hidden] {
+  display: none !important;
+}
+
+body {
+  margin: 0;
+  background: var(--cs-bg);
+  color: var(--cs-ink);
+  font-family: var(--font-body);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  letter-spacing: 0;
+  margin: 0;
+  /* Fraunces cambia mucho de forma según su eje óptico: a tamaños de
+     texto normal se queda en una serif "de libro" bastante clásica;
+     forzando el eje a su valor más alto se ven las terminaciones
+     redondeadas y el carácter elegante que buscamos. */
+  font-optical-sizing: none;
+  font-variation-settings: "opsz" 144;
+}
+
+a {
+  color: inherit;
+}
+
+/* Fondo: papel cálido con dos resplandores muy sutiles, uno de cada
+   acento (terracota y verde-azulado), en vez del negro con morado de
+   antes. */
+.hero-bg {
+  min-height: 100vh;
+  background:
+    radial-gradient(120% 120% at 15% 10%, rgba(200, 83, 42, 0.12) 0%, rgba(251, 242, 231, 0) 55%),
+    radial-gradient(100% 100% at 85% 85%, rgba(29, 107, 104, 0.1) 0%, rgba(251, 242, 231, 0) 50%),
+    var(--cs-bg);
+}
+
+/* Tarjeta de cristal — ahora una tarjeta de "papel" clara con sombra
+   cálida suave, en vez del cristal traslúcido sobre fondo oscuro de
+   antes. Sigue siendo la superficie estándar de CheapScape para
+   buscador, tarjetas y modal. */
+.glass {
+  background: var(--cs-glass-bg);
+  border: 1px solid var(--cs-glass-border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 8px 28px rgba(200, 83, 42, 0.12);
+}
+
+/* Chip oscuro para superponer sobre fotos (badges de tarjetas) — se
+   mantiene oscuro a propósito, da igual el tema de la página, porque
+   va sobre una imagen de fondo variable y necesita texto claro
+   legible encima. */
+.glass-dark {
+  background: var(--cs-glass-dark-bg);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  color: #ffffff;
+}
+
+/* Botón con esquinas suavemente redondeadas (no píldora) */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: transform 0.15s ease, background-color 0.15s ease;
+  text-decoration: none;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn-accent {
+  background: var(--cs-terracotta-700);
+  color: var(--cs-white);
+  transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.25s ease;
+}
+
+.btn-accent:hover {
+  background: var(--cs-terracotta-600);
+  box-shadow: 0 0 0 4px rgba(200, 83, 42, 0.22), 0 8px 24px rgba(200, 83, 42, 0.32);
+}
+
+.btn-glass {
+  color: var(--cs-ink);
+  transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.2s ease;
+}
+
+.btn-glass:hover {
+  border-color: rgba(200, 83, 42, 0.45);
+  background: rgba(200, 83, 42, 0.1);
+}
+
+/* ---------- Layout genérico ---------- */
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.page-padding {
+  padding: 4rem 0;
+}
+
+/* ---------- Header / navegación ---------- */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: rgba(251, 242, 231, 0.85);
+  border-bottom: 1px solid rgba(43, 32, 25, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.site-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+.logo-link {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.logo-img {
+  height: 32px;
+  width: auto;
+  display: block;
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.logo-link:hover .logo-img {
+  transform: scale(1.05) rotate(-2deg);
+  filter: drop-shadow(0 0 10px rgba(200, 83, 42, 0.45));
+}
+
+.footer-logo {
+  height: 36px;
+  width: auto;
+  display: block;
+}
+
+.main-nav {
+  display: none;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  justify-content: center;
+}
+
+@media (min-width: 860px) {
+  .main-nav {
+    display: flex;
+  }
+}
+
+.nav-link {
+  padding: 0.5rem 0.9rem;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: rgba(43, 32, 25, 0.65);
+  text-decoration: none;
+  transition: color 0.15s ease, background-color 0.15s ease;
+  white-space: nowrap;
+}
+
+.nav-link:hover {
+  color: var(--cs-ink);
+  background: rgba(200, 83, 42, 0.08);
+}
+
+.nav-link.active {
+  color: var(--cs-ink);
+  background: rgba(200, 83, 42, 0.14);
+}
+
+.btn-login-desktop {
+  display: none;
+}
+
+@media (min-width: 860px) {
+  .btn-login-desktop {
+    display: inline-flex;
+  }
+}
+
+.nav-toggle {
+  display: inline-flex;
+  margin-left: auto;
+  margin-right: 0.5rem;
+  background: none;
+  border: none;
+  color: var(--cs-ink);
+  font-size: 1.4rem;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+}
+
+@media (min-width: 860px) {
+  .nav-toggle {
+    display: none;
+  }
+}
+
+.main-nav-mobile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0 1.5rem 1rem;
+}
+
+.main-nav-mobile .nav-link {
+  text-align: left;
+}
+
+/* ---------- Footer ---------- */
+
+.site-footer {
+  border-top: 1px solid rgba(43, 32, 25, 0.1);
+  background: var(--cs-bg-alt);
+  padding: 3rem 0 0;
+  color: rgba(43, 32, 25, 0.75);
+  font-size: 0.9rem;
+}
+
+.footer-grid {
+  display: grid;
+  gap: 2rem 1.5rem;
+  grid-template-columns: 1fr 1fr;
+}
+
+.footer-brand {
+  grid-column: 1 / -1;
+}
+
+@media (min-width: 720px) {
+  .footer-grid {
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  }
+
+  .footer-brand {
+    grid-column: auto;
+  }
+}
+
+.footer-brand p {
+  margin: 0.9rem 0 0;
+  max-width: 260px;
+  line-height: 1.5;
+}
+
+.footer-col h4 {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgba(43, 32, 25, 0.5);
+  margin-bottom: 0.9rem;
+}
+
+.footer-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-col a {
+  color: rgba(43, 32, 25, 0.7);
+  text-decoration: none;
+  padding: 0.3rem 0;
+  display: inline-block;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.footer-col a:hover {
+  color: var(--cs-ink);
+  transform: translateX(4px);
+}
+
+.footer-bottom {
+  max-width: 1100px;
+  margin: 2.5rem auto 0;
+  padding: 1.5rem;
+  border-top: 1px solid rgba(43, 32, 25, 0.1);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: rgba(43, 32, 25, 0.5);
+}
+
+/* ---------- Landing ---------- */
+
+.landing-main {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 85vh;
+  padding: 3.5rem 1.5rem;
+  overflow: hidden;
+}
+
+.landing-main h1 {
+  font-size: 2.1rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 1.15;
+}
+
+@media (min-width: 420px) {
+  .landing-main h1 {
+    font-size: 2.6rem;
+  }
+}
+
+.landing-main .subtitle {
+  margin-top: 1.1rem;
+  max-width: 560px;
+  color: var(--cs-ink-soft);
+  font-size: 1.05rem;
+}
+
+@media (min-width: 640px) {
+  .landing-main h1 {
+    font-size: 3.6rem;
+  }
+}
+
+/* ---------- Buscador ---------- */
+
+.search-bar {
+  width: 100%;
+  max-width: 760px;
+  border-radius: 24px;
+  padding: 0.9rem;
+  margin-top: 2.5rem;
+}
+
+.search-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+@media (min-width: 560px) {
+  .search-fields {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: stretch;
+  }
+
+  /* El flex-basis solo debe actuar como ancho mínimo cuando los
+     campos van en fila; en columna (móvil) se interpretaría como
+     alto mínimo y dejaría huecos en blanco entre campos. */
+  .search-field {
+    flex: 1 1 130px;
+    min-width: 130px;
+  }
+
+  .search-field.search-field-origen {
+    flex: 1 1 220px;
+  }
+
+  .search-field-fecha {
+    flex: 1 1 150px;
+    min-width: 150px;
+  }
+}
+
+@media (min-width: 980px) {
+  .search-fields {
+    flex-wrap: nowrap;
+  }
+
+  .search-field {
+    border-right: 1px solid rgba(43, 32, 25, 0.12);
+  }
+
+  .search-field:last-of-type {
+    border-right: none;
+  }
+}
+
+.search-field {
+  padding: 0.3rem 0.75rem;
+}
+
+.search-field label {
+  display: block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: rgba(43, 32, 25, 0.55);
+}
+
+.search-field label {
+  text-align: center;
+}
+
+.search-field input,
+.search-field select {
+  width: 100%;
+  margin-top: 0.25rem;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--cs-ink);
+  font-size: 1rem;
+  font-family: inherit;
+  text-align: center;
+  text-align-last: center;
+}
+
+.search-field input::placeholder {
+  color: rgba(43, 32, 25, 0.35);
+}
+
+.presupuesto-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+}
+
+.presupuesto-group input {
+  width: 100%;
+  min-width: 0;
+  text-align: right;
+}
+
+.presupuesto-group .presupuesto-symbol {
+  flex: 0 0 auto;
+  color: rgba(43, 32, 25, 0.55);
+  margin-left: 0.2rem;
+}
+
+/* Quita las flechitas nativas del <input type="number"> (desalineaban
+   el campo con el resto del buscador). */
+.presupuesto-group input[type="number"] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.presupuesto-group input[type="number"]::-webkit-outer-spin-button,
+.presupuesto-group input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* La etiqueta "PRESUPUESTO MÁX." es la única de dos palabras largas:
+   evita que se parta en dos líneas y descuadre la fila del buscador. */
+.search-field-presupuesto label {
+  white-space: nowrap;
+  font-size: 0.64rem;
+}
+
+@media (min-width: 560px) {
+  .search-field-presupuesto {
+    flex: 1 1 150px;
+    min-width: 150px;
+  }
+}
+
+/* El <select> nativo no puede pintarse por dentro (los <option> los
+   dibuja el sistema operativo), así que solo controlamos su texto. */
+.search-field select {
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+
+.search-field select option {
+  color: var(--cs-ink);
+  background: #ffffff;
+}
+
+.search-field select optgroup {
+  color: var(--cs-terracotta-700);
+  background: #ffffff;
+  font-style: normal;
+  font-weight: 600;
+}
+
+.search-field input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+}
+
+.search-field input[type="date"] {
+  color-scheme: light;
+}
+
+.search-submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.3rem;
+}
+
+@media (min-width: 560px) {
+  .search-submit {
+    flex: 1 1 100%;
+  }
+}
+
+@media (min-width: 980px) {
+  .search-submit {
+    flex: 1 1 130px;
+  }
+
+  .search-submit .btn {
+    width: 100%;
+  }
+}
+
+.search-error {
+  margin: 0.6rem 0 0 0.75rem;
+  min-height: 1.2em;
+  color: #b45309;
+  font-size: 0.9rem;
+}
+
+/* Si no hay mensaje, el párrafo sigue reservando su hueco (con
+   visibility, no con [hidden]) para que el formulario no "salte" ni
+   empuje el resto de la página al aparecer el error. */
+.search-error.is-empty {
+  visibility: hidden;
+}
+
+.field-error {
+  margin: 0.3rem 0 0;
+  min-height: 1.1em;
+  font-size: 0.78rem;
+  color: #b45309;
+  visibility: hidden;
+}
+
+.field-error.visible {
+  visibility: visible;
+}
+
+/* En el modal de registro el fondo es oscuro: el error va en claro */
+.modal-box .field-error {
+  color: var(--cs-terracotta-300);
+}
+
+.hint {
+  margin-top: 1.5rem;
+  font-size: 0.75rem;
+  color: rgba(43, 32, 25, 0.45);
+}
+
+/* Casilla "me vale habitación compartida" bajo los campos del buscador */
+.search-check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+  font-size: 0.85rem;
+  color: var(--cs-ink-soft);
+  cursor: pointer;
+}
+
+.search-check input {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--cs-terracotta-700);
+  cursor: pointer;
+}
+
+/* Casilla de aceptar la política de privacidad al registrarse.
+   Selectores algo más específicos para ganar a los estilos genéricos
+   de label/input de .auth-form y .modal-form. */
+label.check-privacidad {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  text-align: left;
+  cursor: pointer;
+}
+
+.check-privacidad input[type="checkbox"] {
+  flex-shrink: 0;
+  width: 1rem;
+  height: 1rem;
+  padding: 0;
+  margin: 0.1rem 0 0;
+  accent-color: var(--cs-terracotta-700);
+  cursor: pointer;
+}
+
+/* Rótulo obligatorio de "estimación orientativa, no es una oferta" */
+.aviso-precios {
+  max-width: 560px;
+  margin: 0.5rem auto 0;
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* ---------- Resultados ---------- */
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 2rem;
+  font-size: 0.9rem;
+  color: rgba(43, 32, 25, 0.55);
+  text-decoration: none;
+}
+
+.back-link:hover {
+  color: var(--cs-ink);
+}
+
+.results-subtitle {
+  margin-top: 0.3rem;
+  color: var(--cs-ink-soft);
+  font-size: 0.95rem;
+}
+
+.cards-row {
+  margin-top: 2.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+/* El Top 3 de resultados.html siempre son 3 tarjetas: en escritorio
+   deben ir en una sola fila de tres, no en 2+1 descompensado. */
+@media (min-width: 1020px) {
+  #cards-row {
+    flex-wrap: nowrap;
+    align-items: stretch;
+  }
+
+  #cards-row .trip-card {
+    max-width: none;
+    flex: 1 1 0;
+  }
+}
+
+.price-origin {
+  margin: -0.4rem 0 0;
+  font-size: 0.72rem;
+  color: rgba(43, 32, 25, 0.45);
+}
+
+.trip-card {
+  width: 100%;
+  max-width: 360px;
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.trip-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(200, 83, 42, 0.45);
+  box-shadow: 0 16px 40px rgba(200, 83, 42, 0.22);
+}
+
+.trip-card-photo {
+  height: 150px;
+  display: flex;
+  align-items: flex-end;
+  padding: 1rem;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.4s ease;
+}
+
+.badge {
+  border-radius: 50px;
+  padding: 0.3rem 0.8rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.trip-card-body {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.trip-card:hover .trip-card-photo {
+  transform: scale(1.08);
+}
+
+.trip-card-body h3 {
+  font-size: 1.3rem;
+  transition: color 0.2s ease;
+}
+
+.trip-card:hover .trip-card-body h3 {
+  color: var(--cs-terracotta-700);
+}
+
+.trip-card-body .pais {
+  margin: 0.15rem 0 0;
+  color: var(--cs-ink-soft);
+  font-size: 0.9rem;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tag {
+  border-radius: 50px;
+  padding: 0.25rem 0.7rem;
+  font-size: 0.75rem;
+  background: rgba(43, 32, 25, 0.06);
+  color: rgba(43, 32, 25, 0.75);
+}
+
+.tag-ahorro {
+  background: rgba(29, 107, 104, 0.14);
+  color: var(--cs-teal);
+  font-weight: 500;
+}
+
+.price-row {
+  margin-top: auto;
+  padding-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.price {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--cs-terracotta-700);
+}
+
+/* ---------- Modal Regwall ---------- */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.82);
+  padding: 1rem;
+}
+
+.modal-overlay.open {
+  display: flex;
+}
+
+.modal-box {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  border-radius: 24px;
+  padding: 1.75rem;
+}
+
+.modal-close {
+  position: absolute;
+  top: 1.1rem;
+  right: 1.1rem;
+  background: none;
+  border: none;
+  color: rgba(43, 32, 25, 0.5);
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.modal-close:hover {
+  color: var(--cs-ink);
+}
+
+.modal-box h2 {
+  font-size: 1.5rem;
+}
+
+.modal-box p {
+  margin-top: 0.5rem;
+  color: var(--cs-ink-soft);
+  font-size: 0.9rem;
+}
+
+.modal-oauth {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.modal-oauth .btn {
+  justify-content: flex-start;
+  gap: 0.75rem;
+  padding-left: 1rem;
+}
+
+.oauth-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.oauth-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.modal-divider {
+  margin: 1.25rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: rgba(43, 32, 25, 0.6);
+}
+
+.modal-switch {
+  margin-top: 1.1rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: rgba(43, 32, 25, 0.55);
+}
+
+.modal-switch a {
+  color: var(--cs-terracotta-700);
+  text-decoration: underline;
+}
+
+.modal-divider span.line {
+  height: 1px;
+  flex: 1;
+  background: rgba(43, 32, 25, 0.14);
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.modal-form input[type="email"],
+.modal-form input[type="password"] {
+  border-radius: 12px;
+  border: 1px solid rgba(43, 32, 25, 0.14);
+  background: var(--cs-bg);
+  padding: 0.75rem 1rem;
+  color: var(--cs-ink);
+  font-size: 0.9rem;
+  outline: none;
+  font-family: inherit;
+  color-scheme: light;
+}
+
+.modal-form input[type="email"]:focus,
+.modal-form input[type="password"]:focus {
+  border-color: var(--cs-terracotta-500);
+}
+
+.modal-form input::placeholder {
+  color: rgba(43, 32, 25, 0.35);
+}
+
+.legal-note {
+  margin-top: 1rem;
+  font-size: 0.68rem;
+  color: rgba(43, 32, 25, 0.4);
+}
+
+/* ---------- Detalle del viaje ---------- */
+
+.detail-grid {
+  margin-top: 2rem;
+  display: grid;
+  gap: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .detail-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.detail-card {
+  border-radius: 20px;
+  padding: 1.5rem;
+}
+
+.timeline-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-top: 1.1rem;
+}
+
+.timeline-item .emoji {
+  font-size: 1.3rem;
+}
+
+.timeline-item p {
+  margin: 0;
+}
+
+.timeline-item .label {
+  font-weight: 500;
+}
+
+.timeline-item .data {
+  color: var(--cs-ink-soft);
+  font-size: 0.9rem;
+}
+
+.hotel-photo {
+  height: 130px;
+  border-radius: 16px;
+  margin-top: 1rem;
+  background-size: cover;
+  background-position: center;
+}
+
+.cta-row {
+  margin-top: 2rem;
+  border-radius: 20px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+}
+
+@media (min-width: 640px) {
+  .cta-row {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+  }
+}
+
+.cta-row .price-label {
+  font-size: 0.9rem;
+  color: var(--cs-ink-soft);
+}
+
+.cta-row .price {
+  font-size: 2rem;
+}
+
+.center-message {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1.5rem;
+}
+
+.center-message p {
+  color: var(--cs-ink-soft);
+  max-width: 420px;
+}
+
+.fine-print {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 0.68rem;
+  color: rgba(43, 32, 25, 0.4);
+}
+
+/* ---------- Secciones de contenido (landing) ---------- */
+
+.section {
+  padding: 4.5rem 0;
+}
+
+.section-eyebrow {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--cs-terracotta-700);
+  margin-bottom: 0.6rem;
+}
+
+.section-title {
+  font-size: 2rem;
+}
+
+.section-subtitle {
+  margin-top: 0.75rem;
+  max-width: 560px;
+  color: var(--cs-ink-soft);
+}
+
+.section-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Barra de estadísticas */
+
+.stats-bar {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  text-align: center;
+}
+
+@media (min-width: 720px) {
+  .stats-bar {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.stat-value {
+  font-family: var(--font-heading);
+  font-optical-sizing: none;
+  font-variation-settings: "opsz" 144;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--cs-ink);
+}
+
+.stat-label {
+  margin-top: 0.3rem;
+  font-size: 0.8rem;
+  color: rgba(43, 32, 25, 0.55);
+}
+
+/* Cómo funciona — pasos */
+
+.steps-grid {
+  margin-top: 2.5rem;
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 720px) {
+  .steps-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.step-card {
+  border-radius: 20px;
+  padding: 1.75rem;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.step-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(200, 83, 42, 0.4);
+  box-shadow: 0 16px 36px rgba(200, 83, 42, 0.18);
+}
+
+.step-icon {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  background: rgba(200, 83, 42, 0.12);
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.step-card:hover .step-icon {
+  transform: scale(1.1) rotate(-4deg);
+  background: rgba(200, 83, 42, 0.22);
+}
+
+.step-icon img {
+  width: 30px;
+  height: 30px;
+}
+
+.step-card h3 {
+  font-size: 1.15rem;
+}
+
+.step-card p {
+  margin-top: 0.5rem;
+  color: var(--cs-ink-soft);
+  font-size: 0.9rem;
+}
+
+.step-number {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: rgba(43, 32, 25, 0.4);
+  letter-spacing: 0.05em;
+  margin-bottom: 0.4rem;
+}
+
+/* Teaser Top Chollos */
+
+.teaser-footer {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+/* Por qué CheapScape — beneficios */
+
+.benefits-grid {
+  margin-top: 2.5rem;
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .benefits-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.benefit-card {
+  border-radius: 18px;
+  padding: 1.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.benefit-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(200, 83, 42, 0.35);
+  box-shadow: 0 12px 30px rgba(200, 83, 42, 0.16);
+}
+
+.benefit-card h3 {
+  font-size: 1.05rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: transform 0.25s ease;
+}
+
+.benefit-card:hover h3 {
+  transform: translateX(3px);
+}
+
+.benefit-card p {
+  margin-top: 0.5rem;
+  color: var(--cs-ink-soft);
+  font-size: 0.9rem;
+}
+
+/* CTA final */
+
+.cta-banner {
+  border-radius: 24px;
+  padding: 3rem 2rem;
+  text-align: center;
+  background:
+    radial-gradient(120% 160% at 50% 0%, rgba(200, 83, 42, 0.16) 0%, rgba(251, 242, 231, 0) 60%),
+    var(--cs-bg-alt);
+  border: 1px solid rgba(200, 83, 42, 0.22);
+}
+
+.cta-banner h2 {
+  font-size: 1.9rem;
+}
+
+.cta-banner p {
+  margin-top: 0.6rem;
+  color: var(--cs-ink-soft);
+}
+
+.cta-banner .btn {
+  margin-top: 1.5rem;
+}
+
+/* Páginas "próximamente" (Cómo funciona / Top Chollos / Quién somos,
+   antes de que las construyamos del todo) */
+
+.filter-row {
+  margin-top: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  justify-content: center;
+}
+
+.filter-btn {
+  border: 1px solid rgba(200, 83, 42, 0.25);
+  background: transparent;
+  color: rgba(43, 32, 25, 0.65);
+  border-radius: 10px;
+  padding: 0.55rem 1.1rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  transition: transform 0.15s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.filter-btn:hover {
+  border-color: rgba(200, 83, 42, 0.55);
+  color: var(--cs-ink);
+  transform: translateY(-1px);
+}
+
+.filter-btn.active {
+  background: var(--cs-terracotta-700);
+  color: var(--cs-white);
+  border-color: var(--cs-terracotta-700);
+}
+
+.filter-btn.active:hover {
+  background: var(--cs-terracotta-600);
+}
+
+.rank-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: var(--cs-terracotta-700);
+  color: var(--cs-white);
+  font-size: 0.85rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.about-grid {
+  margin-top: 2rem;
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: 1fr;
+  align-items: center;
+}
+
+@media (min-width: 720px) {
+  .about-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.about-grid p {
+  color: var(--cs-ink-soft);
+  line-height: 1.6;
+  margin-top: 1rem;
+}
+
+/* ---------- Puntero personalizado ---------- */
+/* Solo se aplica con ratón/trackpad de precisión; en móvil/tablet no
+   se toca el cursor nativo (ver comprobación en js/cursor.js). */
+
+@media (hover: hover) and (pointer: fine) {
+  body {
+    cursor: none;
+  }
+
+  a,
+  button,
+  select,
+  input,
+  .filter-btn {
+    cursor: none;
+  }
+}
+
+/* Seguro: si cursor.js detecta un toque real, se restaura el cursor
+   normal aunque el navegador diga que hay "pointer: fine". */
+body.cursor-touch-override,
+body.cursor-touch-override a,
+body.cursor-touch-override button,
+body.cursor-touch-override select,
+body.cursor-touch-override input,
+body.cursor-touch-override .filter-btn {
+  cursor: auto !important;
+}
+
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.cursor-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--cs-terracotta-600);
+  box-shadow: 0 0 8px rgba(200, 83, 42, 0.55);
+}
+
+.cursor-ring {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(200, 83, 42, 0.45);
+  transition: width 0.25s ease, height 0.25s ease, border-color 0.25s ease,
+    box-shadow 0.25s ease, opacity 0.2s ease;
+}
+
+/* Al pasar sobre un elemento interactivo, el anillo crece y brilla.
+   Sin relleno (solo borde): un círculo sólido de 56px centrado en el
+   cursor tapaba el texto de botones/enlaces pequeños. */
+body.cursor-hover .cursor-ring {
+  width: 46px;
+  height: 46px;
+  border-color: rgba(176, 72, 34, 0.9);
+  box-shadow: 0 0 20px rgba(200, 83, 42, 0.4);
+  background: transparent;
+  mix-blend-mode: normal;
+}
+
+body.cursor-hover .cursor-dot {
+  background: var(--cs-ink);
+}
+
+/* Pequeño "pulso" de feedback al hacer clic. */
+body.cursor-click .cursor-ring {
+  width: 26px;
+  height: 26px;
+}
+
+/* ---------- Páginas de cuenta (login / usuario / admin) ---------- */
+
+.auth-wrap {
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.auth-card {
+  border-radius: 20px;
+  padding: 2rem;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  margin-top: 1.5rem;
+}
+
+.auth-form label {
+  display: block;
+  font-size: 0.78rem;
+  color: rgba(43, 32, 25, 0.55);
+  margin-bottom: 0.3rem;
+}
+
+.auth-form input {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid rgba(43, 32, 25, 0.14);
+  background: var(--cs-bg);
+  padding: 0.75rem 1rem;
+  color: var(--cs-ink);
+  font-size: 0.95rem;
+  outline: none;
+  font-family: inherit;
+  color-scheme: light;
+}
+
+.auth-form input::placeholder {
+  color: rgba(43, 32, 25, 0.35);
+}
+
+.auth-form input:focus {
+  border-color: var(--cs-terracotta-500);
+}
+
+.auth-hint {
+  margin-top: 1rem;
+  font-size: 0.78rem;
+  color: rgba(43, 32, 25, 0.45);
+  text-align: center;
+}
+
+.auth-card .legal-note a {
+  color: var(--cs-terracotta-700);
+  text-decoration: underline;
+}
+
+.account-grid {
+  margin-top: 2rem;
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 720px) {
+  .account-grid {
+    grid-template-columns: 1fr 2fr;
+  }
+}
+
+/* Sección con fondo un poco más tostado, para separar bloques. */
+.section-alt {
+  background: var(--cs-bg-alt);
+}
+
+.account-card {
+  border-radius: 20px;
+  padding: 1.75rem;
+}
+
+.account-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  margin-bottom: 1rem;
+  background: var(--cs-terracotta-700);
+  color: var(--cs-white);
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.account-label {
+  margin: 0;
+  color: var(--cs-ink-faint);
+  font-size: 0.8rem;
+}
+
+.account-email {
+  margin: 0.3rem 0 0;
+  font-weight: 600;
+  word-break: break-all;
+}
+
+.account-datos {
+  margin: 1.25rem 0 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.4rem 1rem;
+  font-size: 0.9rem;
+}
+
+.account-datos dt {
+  color: var(--cs-ink-faint);
+}
+
+.account-datos dd {
+  margin: 0;
+  color: var(--cs-ink);
+  font-weight: 500;
+}
+
+.account-lista {
+  margin: 0.75rem 0 0;
+  padding-left: 1.2rem;
+  color: var(--cs-ink-soft);
+  line-height: 1.6;
+}
+
+.account-texto {
+  margin: 0.75rem 0 0;
+  color: var(--cs-ink-soft);
+  line-height: 1.6;
+}
+
+.account-texto a {
+  color: var(--cs-terracotta-700);
+}
+
+.role-badge {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.25rem 0.7rem;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: rgba(200, 83, 42, 0.14);
+  color: var(--cs-terracotta-700);
+}
+
+.admin-table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.admin-acciones {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.btn-small {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.78rem;
+}
+
+.btn-danger {
+  border-color: rgba(220, 38, 38, 0.5);
+  color: #b91c1c;
+}
+
+.btn-danger:hover {
+  background: rgba(220, 38, 38, 0.08);
+}
+
+.admin-table th {
+  text-align: left;
+  padding: 0.7rem 0.8rem;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: rgba(43, 32, 25, 0.5);
+  border-bottom: 1px solid rgba(43, 32, 25, 0.12);
+}
+
+.admin-table td {
+  padding: 0.7rem 0.8rem;
+  border-bottom: 1px solid rgba(43, 32, 25, 0.08);
+  color: var(--cs-ink-soft);
+}
+
+.admin-stats {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, 1fr);
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .admin-stats {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.admin-stat {
+  border-radius: 16px;
+  padding: 1.1rem;
+  text-align: center;
+}
+
+.admin-stat .stat-value {
+  font-size: 1.6rem;
+}
+
+/* ---------- Páginas legales ---------- */
+
+.legal-content {
+  max-width: 720px;
+  margin: 0 auto;
+  color: var(--cs-ink-soft);
+  line-height: 1.7;
+}
+
+.legal-content h2 {
+  margin-top: 2rem;
+  font-size: 1.2rem;
+  color: var(--cs-ink);
+}
+
+.legal-content p {
+  margin-top: 0.6rem;
+}
+
+.legal-draft-note {
+  margin-top: 1.5rem;
+  padding: 0.9rem 1.1rem;
+  border-radius: 14px;
+  background: rgba(180, 83, 9, 0.08);
+  border: 1px solid rgba(180, 83, 9, 0.3);
+  color: #b45309;
+  font-size: 0.85rem;
+}

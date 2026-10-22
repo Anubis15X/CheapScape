@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Top Chollos — CheapScape</title>
+  <meta name="description" content="Los 15 destinos de escapada de finde de CheapScape, filtrables por baratos, calidad-precio y exóticos." />
+  <link rel="stylesheet" href="css/fonts.css" />
+  <link rel="icon" href="imagenes/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" href="imagenes/favicon-32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="imagenes/favicon.png" />
+  <link rel="apple-touch-icon" href="imagenes/apple-touch-icon.png" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container site-header-inner">
+      <a href="index.html" class="logo-link">
+        <img src="imagenes/logo_cs.png" alt="CheapScape" class="logo-img" />
+      </a>
+      <nav class="main-nav">
+        <a href="index.html" class="nav-link">Explorar</a>
+        <a href="como-funciona.html" class="nav-link">Cómo funciona</a>
+        <a href="top-chollos.html" class="nav-link active">Top Chollos</a>
+        <a href="quien-somos.html" class="nav-link">Quién somos</a>
+      </nav>
+      <button class="btn glass btn-glass btn-login-desktop" type="button">Iniciar sesión</button>
+      <button id="nav-toggle" class="nav-toggle" type="button" aria-label="Abrir menú">☰</button>
+    </div>
+    <nav id="main-nav-mobile" class="main-nav-mobile" hidden>
+      <a href="index.html" class="nav-link">Explorar</a>
+      <a href="como-funciona.html" class="nav-link">Cómo funciona</a>
+      <a href="top-chollos.html" class="nav-link active">Top Chollos</a>
+      <a href="quien-somos.html" class="nav-link">Quién somos</a>
+      <button class="btn btn-accent btn-login-mobile" type="button" style="margin-top: 0.5rem">Iniciar sesión</button>
+    </nav>
+  </header>
+
+  <main class="hero-bg page-padding">
+    <div class="container section-header">
+      <span class="section-eyebrow">Nuestros destinos</span>
+      <h1 class="section-title">Los 15 destinos de CheapScape</h1>
+      <p class="section-subtitle">
+        Las ciudades entre las que buscamos tu escapada de finde. Filtra
+        por el tipo de escapada que te apetece.
+      </p>
+    </div>
+
+    <div class="container filter-row">
+      <button class="filter-btn active" type="button" data-filtro="todos">Todos</button>
+      <button class="filter-btn" type="button" data-filtro="baratos">💸 Baratos</button>
+      <button class="filter-btn" type="button" data-filtro="calidad">⭐ Calidad-precio</button>
+      <button class="filter-btn" type="button" data-filtro="exoticos">🧭 Exóticos</button>
+    </div>
+
+    <div class="container cards-row" id="top10-row" style="margin-top: 2.5rem">
+
+      <div class="trip-card glass" data-categoria="baratos">
+        <div class="trip-card-photo" style="background-image: linear-gradient(160deg, #f3c7a4 0%, #c8532a 100%)">
+          <span class="badge glass-dark">#1 💸 Baratos</span>
+        </div>
+        <div class="trip-card-body">
+          <div><h3>Budapest</h3><p class="pais">Hungría</p></div>
+          <div class="price-row"><span class="tag">Precio por revisar</span></div>
+        </div>
+      </div>
+
+      <div class="trip-card glass" data-categoria="baratos">
+        <div class="trip-card-photo" style="background-image: linear-gradient(160deg, #c8532a 0%, #8a3a1a 100%)">
+          <span class="badge glass-dark">#2 💸 Baratos</span>
+        </div>
+        <div class="trip-card-body">
+          <div><h3>Praga</h3><p class="pais">Chequia</p></div>
+          <div class="price-row"><span class="tag">Precio por revisar</span></div>
+        </div>
+      </div>
+
+      <div class="trip-card glass" data-categoria="baratos">
+        <div class="trip-card-photo" style="background-image: linear-gradient(160deg, #f0c2a6 0%, #a8431f 100%)">
+          <span class="badge glass-dark">#3 💸 Baratos</span>
+        </div>
+        <div class="trip-card-body">
+          <div><h3>Varsovia</h3><p class="pais">Polonia</p></div>
+          <div class="price-row"><span class="tag">Precio por revisar</span></div>
+        </div>
+      </div>
+
+      <div class="trip-card glass" data-categoria="baratos">
+        <div class="trip-card-photo" style="background-image: linear-gradient(160deg, #e08a5b 0%, #8a3a1a 100%)">
+          <span class="badge glass-dark">#4 💸 Baratos</span>
+        </div>
+        <div class="trip-card-body">
+          <div><h3>Atenas</h3><p class="pais">Grecia</p></div>
+          <div class="price-row"><span class="tag">Precio por revisar</span></div>
+        </div>
+      </div>
+
+      <div class="trip-card glass" data-categoria="baratos">
+        <div class="trip-card-photo" style="background-image: linear-gradient(160deg, #f3c7a4 0%, #a8431f 100%)">
+          <span class="badge glass-dark">#5 💸 Baratos</span>
+        </div>
+        <div class="trip-card-body">
+          <div><h3>Bratislava</h3><p class="pais">Eslovaquia</p></div>
+          <div class="price-row"><span class="tag">Precio por revisar</span></div>
+        </div>
+      </div>
+
+      <div class="trip-card glass" data-categoria="calidad">
+        <div class="trip-card-photo" style="background-image: linear-gradient(160deg, #8fd4ce 0%, #1d6b68 100%)">
+          <span class="badge glass-dark">#6 ⭐ Calidad-precio</span>
+        </div>
+        <div class="trip-card-body">
+          <div><h3>Roma</h3><p class="pais">Italia</p></div>
+          <div class="price-row"><span class="tag">Precio por revisar</span></div>
+        </div>
+      </div>
+
+      <div class="trip-card glass" data-categoria="calidad">
+        <div class="trip-card-photo" style="background-image: linear-gradient(160deg, #1d6b68 0%, #123f3d 100%)">
+          <span class="badge glass-dark">#7 ⭐ Calidad-precio</span>
+        </div>
+        <div class="trip-card-body">
+          <div><h3>París</h3><p class="pais">Francia</p></div>
+          <div class="price-row"><span class="tag">Precio por revisar</span></div>
+        </div>
+      </div>
+
+      <div class="trip-card glass" data-categoria="calidad">
+        <div class="trip-card-photo" style="background-image: linear-gradient(160deg, #a9ddd8 0%, #2a7f7b 100%)">
+          <span class="badge glass-dark">#8 ⭐ Calidad-precio</span>
+        </div>
+        <div class="trip-card-body">
+          <div><h3>Ámsterdam</h3><p class="pais">Países Bajos</p></div>
+          <div class="price-row"><span class="tag">Precio por revisar</span></div>
+        </div>
+      </div>
+
+      <div class="trip-card glass" data-categoria="calidad">
+        <div class="trip-card-photo" style="background-image: linear-gradient(160deg, #5fb3ad 0%, #123f3d 100%)">
+          <span class="badge glass-dark">#9 ⭐ Calidad-precio</span>
+        </div>
+        <div class="trip-card-body">
+          <div><h3>Berlín</h3><p class="pais">Alemania</p></div>
+          <div class="price-row"><span class="tag">Precio por revisar</span></div>
+        </div>
+      </div>
+
+      <div class="trip-card glass" data-categoria="calidad">
+        <div class="trip-card-photo" style="background-image: linear-gradient(160deg, #8fd4ce 0%, #123f3d 100%)">
+          <span class="badge glass-dark">#10 ⭐ Calidad-precio</span>
+        </div>
+        <div class="trip-card-body">
+          <div><h3>Viena</h3><p class="pais">Austria</p></div>
+          <div class="price-row"><span class="tag">Precio por revisar</span></div>
+        </div>
+      </div>
+
+      <div class="trip-card glass" data-categoria="exoticos">
+        <div class="trip-card-photo" style="background-image: linear-gradient(160deg, #f6d388 0%, #b9792b 100%)">
+          <span class="badge glass-dark">#11 🧭 Exóticos</span>
+        </div>
+        <div class="trip-card-body">
+          <div><h3>Skopie</h3><p class="pais">Macedonia del Norte</p></div>
+          <div class="price-row"><span class="tag">Precio por revisar</span></div>
+        </div>
+      </div>
+
+      <div class="trip-card glass" data-categoria="exoticos">
+        <div class="trip-card-photo" style="background-image: linear-gradient(160deg, #e6b863 0%, #9e6118 100%)">
+          <span class="badge glass-dark">#12 🧭 Exóticos</span>
+        </div>
+        <div class="trip-card-body">
+          <div><h3>Belgrado</h3><p class="pais">Serbia</p></div>
+          <div class="price-row"><span class="tag">Precio por revisar</span></div>
+        </div>
+      </div>
+
+      <div class="trip-card glass" data-categoria="exoticos">
+        <div class="trip-card-photo" style="background-image: linear-gradient(160deg, #f6d388 0%, #c8532a 100%)">
+          <span class="badge glass-dark">#13 🧭 Exóticos</span>
+        </div>
+        <div class="trip-card-body">
+          <div><h3>Reikiavik</h3><p class="pais">Islandia</p></div>
+          <div class="price-row"><span class="tag">Precio por revisar</span></div>
+        </div>
+      </div>
+
+      <div class="trip-card glass" data-categoria="exoticos">
+        <div class="trip-card-photo" style="background-image: linear-gradient(160deg, #f0c97a 0%, #8a5a1a 100%)">
+          <span class="badge glass-dark">#14 🧭 Exóticos</span>
+        </div>
+        <div class="trip-card-body">
+          <div><h3>Oslo</h3><p class="pais">Noruega</p></div>
+          <div class="price-row"><span class="tag">Precio por revisar</span></div>
+        </div>
+      </div>
+
+      <div class="trip-card glass" data-categoria="exoticos">
+        <div class="trip-card-photo" style="background-image: linear-gradient(160deg, #e6b863 0%, #b9792b 100%)">
+          <span class="badge glass-dark">#15 🧭 Exóticos</span>
+        </div>
+        <div class="trip-card-body">
+          <div><h3>Zúrich</h3><p class="pais">Suiza</p></div>
+          <div class="price-row"><span class="tag">Precio por revisar</span></div>
+        </div>
+      </div>
+    </div>
+
+    <p style="text-align: center; margin-top: 1.5rem; font-size: 0.75rem; color: var(--cs-ink-faint)">
+      Precios pendientes de revisar a mano antes del lanzamiento.
+    </p>
+
+    <div class="container" style="margin-top: 3rem">
+      <div class="cta-banner">
+        <h2>¿Ves algo que te gusta?</h2>
+        <p>Pon tu presupuesto y mira si te sale aún mejor.</p>
+        <a href="index.html?ir_a_buscador=1" class="btn btn-accent">Buscar mi escapada</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <img src="imagenes/logo_cs.png" alt="CheapScape" class="footer-logo" />
+        <p>Tu escapada de fin de semana (vuelo + hotel), resuelta en un clic.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Explora</h4>
+        <a href="index.html">Explorar</a>
+        <a href="como-funciona.html">Cómo funciona</a>
+        <a href="top-chollos.html">Top Chollos</a>
+        <a href="quien-somos.html">Quién somos</a>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <a href="aviso-legal.html">Aviso legal</a>
+        <a href="privacidad.html">Política de privacidad</a>
+        <a href="cookies.html">Política de cookies</a>
+        <a href="terminos.html">Términos y condiciones</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contacto</h4>
+        <a href="mailto:hola@cheapscape.com">hola@cheapscape.com</a>
+        <a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://tiktok.com" target="_blank" rel="noopener">TikTok</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 CheapScape. Todos los derechos reservados.</p>
+      <p>Proyecto en fase de desarrollo — los precios y destinos mostrados son de ejemplo.</p>
+    </div>
+  </footer>
+
+  <script src="js/cursor.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/authHeader.js"></script>
+  <script src="js/top-chollos.js"></script>
+  <script src="js/chollosClic.js"></script>
+</body>
+</html>
