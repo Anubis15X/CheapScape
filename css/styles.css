@@ -1814,6 +1814,19 @@ body.cursor-click .cursor-ring {
   color: #b91c1c;
 }
 
+/* Modal de confirmación del panel: caja oscura, texto claro. */
+#confirmar-overlay .modal-box h2 {
+  color: var(--cs-white);
+}
+
+#confirmar-overlay .modal-box p {
+  color: var(--cs-white);
+  opacity: 0.85;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
 .admin-select {
   padding: 0.4rem 0.6rem;
   border: 1px solid rgba(43, 32, 25, 0.18);
