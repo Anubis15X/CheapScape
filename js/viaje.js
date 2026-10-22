@@ -11,20 +11,13 @@ const bloqueadoEl = document.getElementById("bloqueado");
 const cargandoEl = document.getElementById("cargando");
 const detalleEl = document.getElementById("detalle");
 
-// Mismos degradados que resultados.js, por tipo de tarjeta, para que
-// el bloque de alojamiento no sea un degradado plano desconectado del
-// resto (antes siempre era el mismo morado, fuera cual fuera el
-// destino). Si el destino coincide con una de nuestras 3 fotos reales,
-// se usa la foto en vez del degradado.
+// Mismos degradados que resultados.js, por tipo de tarjeta. Van
+// debajo de la foto del destino y solo se ven si la foto no carga.
 const FONDOS = {
   barato: "linear-gradient(160deg, #f3c7a4 0%, #c8532a 100%)",
   valorado: "linear-gradient(160deg, #8fd4ce 0%, #1d6b68 100%)",
   exotico: "linear-gradient(160deg, #f6d388 0%, #b9792b 100%)",
 };
-
-// Vacío de momento: ninguno de los 15 destinos tiene foto todavía.
-// Para añadir una: Budapest: "imagenes/foto-budapest.jpg",
-const FOTOS_DESTINO = {};
 
 function formatearFecha(iso) {
   if (!iso) return "";
@@ -74,13 +67,10 @@ function pintarDetalle(detalle) {
     detalle.transporte.vueltaSalida + " → " + detalle.transporte.vueltaLlegada + " · " + detalle.transporte.operador;
 
   const hotelFotoEl = document.getElementById("hotel-foto");
-  const fotoReal = FOTOS_DESTINO[detalle.destino];
-  if (fotoReal) {
-    hotelFotoEl.style.backgroundImage =
-      "linear-gradient(160deg, rgba(76, 29, 149, 0.5) 0%, rgba(5, 3, 10, 0.7) 100%), url('" + fotoReal + "')";
-  } else {
-    hotelFotoEl.style.backgroundImage = FONDOS[detalle.tipoTarjeta] || FONDOS.valorado;
-  }
+  hotelFotoEl.style.backgroundImage =
+    "url('imagenes/destinos/" + detalle.id + ".jpg'), " + (FONDOS[detalle.tipoTarjeta] || FONDOS.valorado);
+  // Es una foto de la ciudad, no del alojamiento: que quede claro.
+  hotelFotoEl.innerHTML = '<span class="badge glass-dark">📍 ' + detalle.destino + "</span>";
 
   document.getElementById("hotel-nombre").textContent = detalle.hotel.nombre;
   document.getElementById("hotel-direccion").textContent = detalle.hotel.direccion;

@@ -28,6 +28,8 @@
   --cs-glass-bg: rgba(255, 255, 255, 0.72);
   --cs-glass-border: rgba(43, 32, 25, 0.08);
   --cs-glass-dark-bg: rgba(43, 32, 25, 0.55);
+  /* Capa sobre el vídeo del hero: tinta oscura, más densa abajo. */
+  --cs-hero-overlay: linear-gradient(180deg, rgba(43, 32, 25, 0.45) 0%, rgba(43, 32, 25, 0.6) 100%);
 
   /* Fraunces (serif de terminaciones redondeadas, elegante) en
      titulares, Inter (sans) en cuerpo — servidas desde /fonts (ver
@@ -382,6 +384,59 @@ a {
   min-height: 85vh;
   padding: 3.5rem 1.5rem;
   overflow: hidden;
+}
+
+/* Vídeo de fondo del hero, con una capa oscura encima para que el
+   texto blanco se lea sobre cualquier ciudad. */
+.hero-media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--cs-ink);
+}
+
+.hero-media video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hero-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--cs-hero-overlay);
+}
+
+.landing-main > :not(.hero-media) {
+  position: relative;
+  z-index: 1;
+}
+
+.landing-main h1,
+.landing-main .subtitle,
+.landing-main .hint {
+  color: var(--cs-white);
+  text-shadow: 0 2px 12px rgba(43, 32, 25, 0.45);
+}
+
+.landing-main .hint {
+  opacity: 0.85;
+}
+
+.landing-main .search-error {
+  text-shadow: none;
+}
+
+.hero-credito {
+  position: absolute !important;
+  right: 1rem;
+  bottom: 0.75rem;
+  margin: 0;
+  font-size: 0.7rem;
+  color: var(--cs-white);
+  opacity: 0.75;
 }
 
 .landing-main h1 {
@@ -1014,6 +1069,9 @@ label.check-privacidad {
   margin-top: 1rem;
   background-size: cover;
   background-position: center;
+  display: flex;
+  align-items: flex-end;
+  padding: 0.75rem;
 }
 
 .cta-row {

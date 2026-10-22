@@ -76,9 +76,45 @@ cheapscape/
 ├── como-funciona.html, quien-somos.html
 ├── aviso-legal.html, privacidad.html, cookies.html, terminos.html
 ├── css/styles.css        Todo el estilo (tokens en :root)
+├── css/fonts.css         Tipografías (archivos en fonts/)
 ├── js/                   Un archivo por página + utilidades
-└── imagenes/             Logo, favicons, iconos SVG, fotos de destinos
+├── imagenes/             Logo, favicons, iconos SVG
+├── imagenes/destinos/    Una foto por destino (<id>.jpg, 900 px)
+└── videos/               Vídeos de dron del hero (10 s, sin sonido) + foto fija
 ```
+
+**Fotos y vídeos:** todas de Unsplash/Pexels, con licencia libre
+que permite uso comercial sin pedir permiso. Créditos:
+
+| Foto | Autor | Fuente |
+|---|---|---|
+| Ámsterdam (canal) | Adrien Olichon | [Unsplash](https://unsplash.com/photos/boats-on-canal-in-amsterdam-QRtym77B6xk) |
+| Atenas (Acrópolis) | Constantinos Kollias | [Unsplash](https://unsplash.com/photos/yqBvJJ8jGBQ) |
+| Belgrado (Kalemegdan) | Dimitrije Milenkovic | [Unsplash](https://unsplash.com/photos/an-aerial-view-of-a-city-with-a-castle-XP1ozWBIPb8) |
+| Berlín (Puerta de Brandeburgo) | Håkon Sataøen | [Unsplash](https://unsplash.com/photos/brandenburg-gate-germany-Oog0wehKxYs) |
+| Bratislava (castillo) | Alexandre | [Unsplash](https://unsplash.com/photos/white-and-brown-concrete-building-4Ss7iUixbCY) |
+| Budapest (Parlamento) | Ervin Lukacs | [Unsplash](https://unsplash.com/photos/hungarian-parliament-building-in-budapest-sMyQb3i9bNA) |
+| Oslo (Ópera) | Vidar Nordli-Mathisen | [Unsplash](https://unsplash.com/photos/q-fr4QsIyic) |
+| París (Torre Eiffel) | Chris Karidis | [Unsplash](https://unsplash.com/photos/eiffel-tower-paris-france-nnzkZNYWHaU) |
+| Praga (Puente de Carlos) | William Zhang | [Unsplash](https://unsplash.com/photos/charles-bridge-and-prague-castle-6En4WYsNYXM) |
+| Reikiavik (Hallgrímskirkja) | Einar H. Reynis | [Unsplash](https://unsplash.com/photos/an-aerial-view-of-a-city-with-mountains-in-the-background-KbF5K6yDfH4) |
+| Roma (Coliseo) | Matteo del Piano | [Unsplash](https://unsplash.com/photos/colosseum-in-rome-at-golden-hour-7Y015gklIDg) |
+| Skopie (río Vardar) | Ondrej Bocek | [Unsplash](https://unsplash.com/photos/monument-and-museum-buildings-by-the-river-YGWh4U0fppA) |
+| Varsovia (Plaza del Castillo) | Lāsma Artmane | [Unsplash](https://unsplash.com/photos/p6gxHYb43v0) |
+| Viena (Karlskirche) | Leonhard Niederwimmer | [Unsplash](https://unsplash.com/photos/wIOTq3jCJEQ) |
+| Zúrich (río Limmat) | Ruth Georgiev | [Unsplash](https://unsplash.com/photos/body-of-water-between-buildings-under-blue-sky-during-daytime-6yqd3PYJ4oI) |
+
+| Vídeo del hero | Autor | Fuente |
+|---|---|---|
+| Bratislava | Austria by Öffis | [Pexels](https://www.pexels.com/video/aerial-view-of-bratislava-cityscape-and-river-33398503/) |
+| Praga | Airam Dato-on | [Pexels](https://www.pexels.com/video/aerial-view-of-prague-cityscape-with-river-34918718/) |
+| Budapest | K | [Pexels](https://www.pexels.com/video/aerial-view-of-budapest-parliament-on-danube-river-34431115/) |
+| Roma | Alberto Escalona | [Pexels](https://www.pexels.com/video/aerial-view-of-ancient-rome-s-tiber-river-35480582/) |
+| París | Florian Delée | [Pexels](https://www.pexels.com/video/aerial-view-of-paris-with-eiffel-tower-and-seine-36492322/) |
+
+El hero de la portada pone los vídeos en orden aleatorio
+(`js/heroVideo.js`). En móvil, con ahorro de datos o con "reducir
+animaciones" solo se ve la foto fija, para no gastar datos.
 
 **Diseño:** tema claro cálido. Tokens CSS en `:root` de
 `css/styles.css`: terracota `#C8532A` (acento principal), teal

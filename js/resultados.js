@@ -52,7 +52,9 @@ function pintarTarjeta(trip, origen) {
   }
 
   card.innerHTML =
-    '<div class="trip-card-photo" style="background-image:' +
+    "<div class=\"trip-card-photo\" style=\"background-image:url('imagenes/destinos/" +
+    trip.id +
+    ".jpg'), " +
     FONDOS[trip.tipoTarjeta] +
     '">' +
     '<span class="badge glass-dark">' +

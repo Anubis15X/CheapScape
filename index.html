@@ -48,6 +48,12 @@
 
   <!-- ========== HERO + BUSCADOR ========== -->
   <main class="hero-bg landing-main">
+    <!-- Vídeo de fondo: lo rellena js/heroVideo.js -->
+    <div class="hero-media" aria-hidden="true">
+      <video id="hero-video" muted playsinline preload="none"></video>
+    </div>
+    <p id="hero-credito" class="hero-credito"></p>
+
     <h1>Escapa este finde<br />sin arruinarte</h1>
     <p class="subtitle">
       Dinos cuánto tienes, te decimos a dónde vas. Tu escapada de fin de
@@ -157,7 +163,7 @@
 
     <div class="container cards-row">
       <div class="trip-card glass">
-        <div class="trip-card-photo" style="background-image: linear-gradient(160deg, #f3c7a4 0%, #c8532a 100%)">
+        <div class="trip-card-photo" style="background-image: url('imagenes/destinos/budapest.jpg'), linear-gradient(160deg, #f3c7a4 0%, #c8532a 100%)">
           <span class="badge glass-dark">💸 Baratos</span>
         </div>
         <div class="trip-card-body">
@@ -172,7 +178,7 @@
       </div>
 
       <div class="trip-card glass">
-        <div class="trip-card-photo" style="background-image: linear-gradient(160deg, #8fd4ce 0%, #1d6b68 100%)">
+        <div class="trip-card-photo" style="background-image: url('imagenes/destinos/roma.jpg'), linear-gradient(160deg, #8fd4ce 0%, #1d6b68 100%)">
           <span class="badge glass-dark">⭐ Calidad-precio</span>
         </div>
         <div class="trip-card-body">
@@ -187,7 +193,7 @@
       </div>
 
       <div class="trip-card glass">
-        <div class="trip-card-photo" style="background-image: linear-gradient(160deg, #f6d388 0%, #b9792b 100%)">
+        <div class="trip-card-photo" style="background-image: url('imagenes/destinos/skopie.jpg'), linear-gradient(160deg, #f6d388 0%, #b9792b 100%)">
           <span class="badge glass-dark">🧭 Exóticos</span>
         </div>
         <div class="trip-card-body">
@@ -291,6 +297,7 @@
   <script src="js/destinos.js"></script>
   <script src="js/motor.js"></script>
   <script src="js/landing.js"></script>
+  <script src="js/heroVideo.js"></script>
   <script src="js/chollosClic.js"></script>
 </body>
 </html>
