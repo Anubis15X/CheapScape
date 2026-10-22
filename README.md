@@ -297,8 +297,9 @@ Cada guía enlaza al buscador. Criterios acordados:
 - **Ir poco a poco.** Jose pidió expresamente avanzar paso a paso; no
   proponer ni construir cosas de Fase 2 sin que lo pida.
 - **Explicar antes de construir** cada fase: tiene que entenderlo.
-- **No subir nada a GitHub** hasta que Jose lo diga (el repo está
-  privado a propósito mientras todo se aclara).
+- **No subir nada a GitHub** hasta que Jose lo diga. Esta carpeta se
+  sube al repo **privado** `Anubis15X/CheapScape-2.0` (desde el
+  22-oct-2026). `supabase/` no se sube nunca (está en `.gitignore`).
 - **No almacenar ni pedir credenciales** (contraseñas, claves, secretos
   de OAuth) en archivos del proyecto; van en variables de entorno que
   Jose gestiona.
